@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="jumbotron">
+  <h1> Booking Details</h1>
+  <ul>
+    <li> Bike Number: {{bike.bike_number}} </li>
+    <li> Bike Pin: {{bike.bike_pin}} </li>
+    <li> Started at: {{current_ride.start_time}} </li>
+    <li> Location: {{current_ride.start_location}} </li>
+  </ul>
+</div>
+
+{% endblock %}
