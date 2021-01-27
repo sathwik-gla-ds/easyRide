@@ -36,6 +36,10 @@ class PaidStatus(enum.Enum):
     YES = "Paid"
     NO = "Not Paid"
 
+class CurrentStatus(enum.Enum):
+    YES = "Ride On Going"
+    NO = "Ride Ended"
+
 class User(db.Model,UserMixin):
     __tablename__ = 'users'
 
@@ -51,10 +55,10 @@ class User(db.Model,UserMixin):
     city = db.Column(db.Enum(CityName), default = 'GLASGOW')
     user_type = db.Column(db.Enum(UserType))
     wallet = db.Column(db.Float, default=0)
+    sessionVar = db.Column(db.String(64))
 
     rides = db.relationship('Transaction',backref='user',lazy=True)
     login_log = db.relationship('LoginLog',backref='user',lazy=True)
-    current_ride = db.relationship('StartRide',backref='user',lazy=True)
     ride_log = db.relationship('RideLog',backref='user',lazy=True)
 
     def __init__(self,first_name, last_name, phone_number, email,password, city, user_type):
@@ -83,13 +87,12 @@ class Transaction(db.Model):
     credit_card_number = db.Column(db.String(16))
     amount = db.Column(db.Float)
     time = db.Column(db.DateTime)
-    ride_id = db.Column(db.String(64),db.ForeignKey('current_rides.ride_id'),unique=True)
+    ride_id = db.Column(db.String(64),db.ForeignKey('ride_log.ride_id'),unique=True)
     paid = db.Column(db.Enum(PaidStatus))
 
-    def __init__(self, user_id, payment_type, credit_card_number, amount, ride_id, paid):
+    def __init__(self, user_id, payment_type, amount, ride_id, paid):
         self.user_id = user_id
         self.payment_type = payment_type
-        self.credit_card_number = credit_card_number
         self.amount = amount
         self.time = datetime.utcnow()
         self.transaction_id = str(user_id) + str(payment_type) + str(self.time)
@@ -118,7 +121,6 @@ class BikeInfo(db.Model):
     status = db.Column(db.Enum(BikeStatus))
     last_location = db.Column(db.Enum(LocationNames))
 
-    current_rides = db.relationship('StartRide',backref='bike',lazy=True)
     ride_log = db.relationship('RideLog',backref='bike',lazy=True)
 
     def __init__(self, bike_number, status, last_location):
@@ -133,43 +135,25 @@ class BikeInfo(db.Model):
         else:
             return False
 
-class StartRide(db.Model):
-    __tablename__ = 'current_rides'
+class RideLog(db.Model):
+    __tablename__ = 'ride_log'
 
     id = db.Column(db.Integer, primary_key=True)
     ride_id = db.Column(db.String(64),unique=True)
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
     bike_number = db.Column(db.Integer, db.ForeignKey('bike_info.bike_number'),nullable=False)
     start_location = db.Column(db.Enum(LocationNames))
+    end_location = db.Column(db.Enum(LocationNames))
     start_time = db.Column(db.DateTime)
+    end_time = db.Column(db.DateTime)
+    current =  db.Column(db.Enum(CurrentStatus))
 
     transaction = db.relationship('Transaction',backref='ride',lazy=True)
-    ride_log = db.relationship('RideLog',backref='ride',lazy=True)
 
-    def __init__(self, user_id, bike_number, start_location):
+    def __init__(self, user_id, bike_number, start_location, current):
         self.user_id = user_id
         self.bike_number = bike_number
         self.start_location = start_location
         self.start_time = datetime.utcnow()
         self.ride_id = str(user_id) + str(bike_number) + str(self.start_time)
-
-class RideLog(db.Model):
-    __tablename__ = 'ride_log'
-
-    id = db.Column(db.Integer, primary_key=True)
-    ride_id = db.Column(db.String(64),db.ForeignKey('current_rides.ride_id'),unique=True)
-    user_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
-    bike_number = db.Column(db.Integer, db.ForeignKey('bike_info.bike_number'),nullable=False)
-    start_location = db.Column(db.Enum(LocationNames))
-    end_location = db.Column(db.Enum(LocationNames))
-    start_time = db.Column(db.DateTime)
-    end_time = db.Column(db.DateTime)
-
-    def __init__(self, ride_id, user_id, bike_number, start_location, end_location, start_time):
-        self.ride_id = ride_id
-        self.user_id = user_id
-        self.bike_number = bike_number
-        self.start_location = start_location
-        self.end_location = end_location
-        self.start_time = start_time
-        self.end_time = datetime.utcnow()
+        self.current = current

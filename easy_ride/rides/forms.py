@@ -6,10 +6,10 @@ from flask_wtf.file import FileField, FileAllowed
 
 
 class StartRideForm(FlaskForm):
-    location = StringField('Start location', validators=[DataRequired()])
+    location = SelectField('Start location', validators=[DataRequired()], choices=['HILLHEAD', 'PARTICK', 'FINNIESTON', 'GOVAN', 'LAURIESTON'])
     submit = SubmitField('Book')
 
 class StopRideForm(FlaskForm):
-    location = StringField('End location', validators=[DataRequired()])
+    location = SelectField('End location', validators=[DataRequired()], choices=['HILLHEAD', 'PARTICK', 'FINNIESTON', 'GOVAN', 'LAURIESTON'])
     payment_type = RadioField('Payment with: ', validators=[DataRequired()], choices=["Credit Card", "Wallet"])
     submit = SubmitField('End ride')

@@ -26,7 +26,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'users.login'
 
-
 #Blueprints
 from easy_ride.core.views import core
 from easy_ride.error_pages.handlers import error_pages

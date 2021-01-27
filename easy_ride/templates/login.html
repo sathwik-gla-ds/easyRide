@@ -1,9 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
+
   <form method="POST">
+    {{form.hidden_tag()}}
+    <div class="mb-3">
+      <label for="email" class="form-label">{{form.email.label}}</label>
+      <input id="email" name="email" type="email" class="form-control" required type="text" value="" aria-describedby="emailHelp">
+      <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">{{form.password.label}}</label>
+      <input id="password" name="password" required type="password" value="" type="password" class="form-control" id="password">
+    </div>
+    <button id="submit" type="submit" name="submit" class="btn btn-primary">{{form.submit.label}}</button>
+  </form>
+  <!-- <form method="POST">
     {{form.hidden_tag()}}
     {{form.email.label}}{{form.email}}<br>
     {{form.password.label}}{{form.password}}<br>
     {{form.submit()}}
-  </form>
+  </form> -->
 {% endblock %}

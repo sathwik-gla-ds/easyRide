@@ -15,7 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 
     <!-- NavBar Code -->
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
           <a class="navbar-brand" href="{{url_for('core.index')}}">Easy Ride</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,15 +23,6 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link" href="{{url_for('rides.rent')}}">Rent</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{url_for('rides.booking')}}">Booking</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{url_for('rides.placeback')}}">Return</a>
-              </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Information
@@ -49,6 +40,22 @@
             </ul>
             <ul class="navbar-nav justify-content-end mb-2 mb-lg-0">
               {% if current_user.is_authenticated %}
+                {% if current_user.sessionVar == 'RENTED' %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{{url_for('rides.booking')}}">Booking</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{url_for('rides.placeback')}}">Return</a>
+                </li>
+                {% elif current_user.sessionVar == 'PAYMENT' %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{{url_for('rides.payment')}}">Payment</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{{url_for('rides.rent')}}">Rent</a>
+                </li>
+                {% endif %}
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('users.logout')}}">Logout</a>
               </li>
@@ -67,8 +74,37 @@
           </div>
         </div>
       </nav>
-
+    <br>
+    <div class="container-sm">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+    <br>
     <div class="container">
+    {%if form%}
+    <div class="container-sm">
+      {%for formname in form %}
+      {% with messages = formname.errors %}
+        {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      {%endfor%}
+    </div>
+    {%endif%}
       {% block content %}
 
       {% endblock %}
