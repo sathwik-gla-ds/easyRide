@@ -1,8 +1,8 @@
 """first migration
 
-Revision ID: a6049716d7a6
+Revision ID: 9286e40357ea
 Revises: 
-Create Date: 2021-01-25 13:08:39.131715
+Create Date: 2021-01-29 17:44:29.800002
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'a6049716d7a6'
+revision = '9286e40357ea'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -39,22 +39,11 @@ def upgrade():
     sa.Column('password_hash', sa.String(length=128), nullable=True),
     sa.Column('city', sa.Enum('GLASGOW', name='cityname'), nullable=True),
     sa.Column('user_type', sa.Enum('NORMAL', 'OPERATOR', 'MANAGER', name='usertype'), nullable=True),
-    sa.Column('wallet', sa.Float(), nullable=True),
+    sa.Column('wallet_balance', sa.Float(), nullable=True),
+    sa.Column('session_var', sa.String(length=64), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_users_email'), 'users', ['email'], unique=True)
-    op.create_table('current_rides',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('ride_id', sa.String(length=64), nullable=True),
-    sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('bike_number', sa.Integer(), nullable=False),
-    sa.Column('start_location', sa.Enum('HILLHEAD', 'PARTICK', 'FINNIESTON', 'GOVAN', 'LAURIESTON', name='locationnames'), nullable=True),
-    sa.Column('start_time', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['bike_number'], ['bike_info.bike_number'], ),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('ride_id')
-    )
     op.create_table('login_logs',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
@@ -72,8 +61,8 @@ def upgrade():
     sa.Column('end_location', sa.Enum('HILLHEAD', 'PARTICK', 'FINNIESTON', 'GOVAN', 'LAURIESTON', name='locationnames'), nullable=True),
     sa.Column('start_time', sa.DateTime(), nullable=True),
     sa.Column('end_time', sa.DateTime(), nullable=True),
+    sa.Column('current', sa.Enum('YES', 'NO', name='currentstatus'), nullable=True),
     sa.ForeignKeyConstraint(['bike_number'], ['bike_info.bike_number'], ),
-    sa.ForeignKeyConstraint(['ride_id'], ['current_rides.ride_id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('ride_id')
@@ -88,7 +77,7 @@ def upgrade():
     sa.Column('time', sa.DateTime(), nullable=True),
     sa.Column('ride_id', sa.String(length=64), nullable=True),
     sa.Column('paid', sa.Enum('YES', 'NO', name='paidstatus'), nullable=True),
-    sa.ForeignKeyConstraint(['ride_id'], ['current_rides.ride_id'], ),
+    sa.ForeignKeyConstraint(['ride_id'], ['ride_log.ride_id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('ride_id'),
@@ -102,7 +91,6 @@ def downgrade():
     op.drop_table('transactions')
     op.drop_table('ride_log')
     op.drop_table('login_logs')
-    op.drop_table('current_rides')
     op.drop_index(op.f('ix_users_email'), table_name='users')
     op.drop_table('users')
     op.drop_index(op.f('ix_bike_info_bike_number'), table_name='bike_info')

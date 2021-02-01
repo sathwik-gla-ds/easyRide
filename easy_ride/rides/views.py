@@ -10,15 +10,13 @@ rides = Blueprint('rides', __name__)
 
 @rides.route('/rent',methods=['GET','POST'])
 def rent():
-    form = StartRideForm()
-
-    if form.validate_on_submit():
-        current_rides = RideLog.query.filter_by(user_id = current_user.id, current = 'YES').first()
-        payment = Transaction.query.filter_by(user_id = current_user.id, paid = 'NO').first()
-        if payment is None:
-            if current_rides is None:
+    current_rides = RideLog.query.filter_by(user_id = current_user.id, current = 'YES').first()
+    payment = Transaction.query.filter_by(user_id = current_user.id, paid = 'NO').first()
+    if payment is None:
+        if current_rides is None:
+            form = StartRideForm()
+            if form.validate_on_submit():
                 bike = BikeInfo.query.filter_by(last_location=form.location.data, status='YES').first()
-
                 if bike is not None:
                     ride = RideLog(user_id = current_user.id,
                                      bike_number = bike.bike_number,
@@ -27,7 +25,7 @@ def rent():
 
                     bike.status = 'NO'
                     user = User.query.filter_by(id=current_user.id).first()
-                    user.sessionVar = 'RENTED'
+                    user.session_var = 'RENTED'
                     db.session.add(user)
                     db.session.add(ride)
                     db.session.add(bike)
@@ -35,14 +33,15 @@ def rent():
 
                     return redirect(url_for('rides.booking'))
                 else:
-                    return redirect(url_for('rides.notavailable'))
-            else:
-                flash("Please return the previous bike before you book another")
-                return redirect(url_for('rides.placeback'))
+                    flash("Sorry, but no bikes are available currently at the location you choose!")
+                    return redirect(url_for('rides.rent'))
+            return render_template('rent.html', form=form)
         else:
-            flash("Please pay for the previous ride before you book another")
-            return redirect(url_for('rides.payment'))
-    return render_template('rent.html', form=form)
+            flash("Please return the previous bike before you book another")
+            return redirect(url_for('rides.placeback'))
+    else:
+        flash("Please pay for the previous ride before you book another")
+        return redirect(url_for('rides.payment'))
 
 @rides.route('/placeback',methods=['GET','POST'])
 def placeback():
@@ -57,7 +56,7 @@ def placeback():
             amount = minutes*0.2
             user = User.query.filter_by(id=current_user.id).first()
 
-            if (form.payment_type.data == "Credit Card") or (form.payment_type.data == "Wallet" and user.wallet > amount):
+            if (form.payment_type.data == "Credit Card") or (form.payment_type.data == "Wallet" and user.wallet_balance > amount):
                 current_ride.end_location = form.location.data
                 current_ride.end_time = datetime.utcnow()
                 current_ride.current = 'NO'
@@ -76,7 +75,7 @@ def placeback():
                                            amount = amount,
                                            ride_id = current_ride.ride_id,
                                            paid = 'NO')
-                user.sessionVar = 'PAYMENT'
+                user.session_var = 'PAYMENT'
                 db.session.add(current_ride)
                 db.session.add(bike)
                 db.session.add(transaction)
@@ -84,7 +83,7 @@ def placeback():
 
                 return redirect(url_for('rides.payment'))
             else:
-                flash('No sufficient balance in the wallet! Please choose credit card instead.')
+                flash('Not enough balance in the wallet! Please choose credit card instead.')
         return render_template('placeback.html', form = form)
     else:
         return redirect(url_for('rides.rent'))

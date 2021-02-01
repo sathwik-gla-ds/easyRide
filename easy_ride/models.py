@@ -54,8 +54,8 @@ class User(db.Model,UserMixin):
     password_hash = db.Column(db.String(128))
     city = db.Column(db.Enum(CityName), default = 'GLASGOW')
     user_type = db.Column(db.Enum(UserType))
-    wallet = db.Column(db.Float, default=0)
-    sessionVar = db.Column(db.String(64))
+    wallet_balance = db.Column(db.Float, default=0)
+    session_var = db.Column(db.String(64))
 
     rides = db.relationship('Transaction',backref='user',lazy=True)
     login_log = db.relationship('LoginLog',backref='user',lazy=True)
