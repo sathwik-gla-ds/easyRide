@@ -3,6 +3,21 @@
 
 <div class="jumbotron">
   <h1> Payment </h1>
+  <ul>
+    <li> Start Location: {{ride.start_location}} </li>
+    <li> End Location: {{ride.end_location}} </li>
+    <li> Time: {{time}} minutes</li>
+    <li> Amount: {{transaction.amount}} GBP</li>
+  </ul>
 </div>
+
+<form method="POST">
+  {{form.hidden_tag()}}
+  <h6 class="text-uppercase">Payment details</h6>
+  {{form.name.label}}{{form.name}}<br>
+  {{form.card.label}}{{form.card}}<br>
+  {{form.month.label}}{{form.month}}{{form.year}}<br>
+  {{form.cvv.label}}{{form.cvv}}<br>
+  {{form.submit}}
 
 {% endblock %}

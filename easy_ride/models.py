@@ -94,8 +94,7 @@ class Transaction(db.Model):
         self.user_id = user_id
         self.payment_type = payment_type
         self.amount = amount
-        self.time = datetime.utcnow()
-        self.transaction_id = str(user_id) + str(payment_type) + str(self.time)
+        self.transaction_id = str(user_id) + str(payment_type) + str(datetime.utcnow())
         self.ride_id = ride_id
         self.paid = paid
 
