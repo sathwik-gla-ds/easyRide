@@ -128,7 +128,7 @@ def payment():
                     db.session.add(user)
                     db.session.add(transaction)
                     db.session.commit()
-                    return redirect(url_for('users.account'))
+                    return redirect(url_for('core.index'))
             return render_template('payment.html', form = form, transaction = transaction, ride = ride, time = minutes)
     else:
         flash('No pending payments')
