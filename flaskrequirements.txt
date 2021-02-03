@@ -12,6 +12,7 @@ Flask-OAuth
 Flask-OAuthlib
 Flask-SQLAlchemy
 Flask-WTF
+gunicorn
 httplib2
 idna
 itsdangerous
@@ -35,4 +36,3 @@ URLObject
 Werkzeug
 wincertstore
 WTForms
-
