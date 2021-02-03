@@ -1,7 +1,7 @@
 from flask import render_template,url_for,flash,redirect,request,Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
 from easy_ride import db
-from easy_ride.models import User, LoginLog
+from easy_ride.models import User, LoginLog, RideLog
 from easy_ride.users.forms import RegistrationForm,LoginForm,UpdateUserForm
 from easy_ride.users.picture_handler import add_profile_pic
 
@@ -94,3 +94,15 @@ def account():
 
     profile_image = url_for('static',filename='profile_pics/'+current_user.profile_image)
     return render_template('account.html',profile_image=profile_image,form=form)
+
+
+@users.route('/wallet',methods=['GET','POST'])
+def wallet():
+    return render_template('wallet.html')
+
+
+@users.route('/userrides',methods=['GET','POST'])
+def userrides():
+    page = request.args.get('page', 1, type=int)
+    userrides = RideLog.query.filter_by(user_id=current_user.id).order_by(RideLog.end_time.desc()).paginate(page=page, per_page=5)
+    return render_template('userrides.html', userrides = userrides)

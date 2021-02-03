@@ -1,8 +1,8 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "account_layout.html" %}
+{% block account %}
   <div class="jumbotron">
     <div align='center'>
-      <h1>Welcome to the page for {{current_user.first_name}}</h1>
+      <h1>{{current_user.first_name}} {{current_user.last_name}}</h1>
       <img class="img-fluid" width="128" height="128" align='center' src="{{url_for('static',filename='profile_pics/'+current_user.profile_image)}}">
     </div>
   </div>
