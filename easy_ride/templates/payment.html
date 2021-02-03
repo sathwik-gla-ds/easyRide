@@ -4,8 +4,8 @@
 <div class="jumbotron">
   <h1> Payment </h1>
   <ul>
-    <li> Start Location: {{ride.start_location}} </li>
-    <li> End Location: {{ride.end_location}} </li>
+    <li> Start Location: {{ride.start_location.name.capitalize()}} </li>
+    <li> End Location: {{ride.end_location.name.capitalize()}} </li>
     <li> Time: {{time}} minutes</li>
     <li> Amount: {{transaction.amount}} GBP</li>
   </ul>
