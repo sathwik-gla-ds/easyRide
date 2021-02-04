@@ -8,12 +8,12 @@
 
 <form method="POST">
   {{form.hidden_tag()}}
-  {{form.amount.label}}{{form.amount}}<br>
-  <h6 class="text-uppercase">Payment details</h6>
-  {{form.name.label}}{{form.name}}<br>
-  {{form.card.label}}{{form.card}}<br>
-  {{form.month.label}}{{form.month}}{{form.year}}<br>
-  {{form.cvv.label}}{{form.cvv}}<br>
+  {{form.amount.label}} {{form.amount}} GBP<br><br>
+  <h6 class="text-uppercase">Payment details</h6><br>
+  {{form.name.label}} {{form.name}}<br>
+  {{form.card.label}} {{form.card}}<br>
+  {{form.month.label}} {{form.month}}{{form.year}}<br>
+  {{form.cvv.label}} {{form.cvv}}<br>
   {{form.submit}}
 </form>
 
