@@ -101,7 +101,7 @@ def payment():
     transaction = Transaction.query.filter_by(user_id=current_user.id, paid='NO').first()
     if transaction is not None:
         user = User.query.filter_by(id=current_user.id).first()
-        if transaction.payment_type == 'WALLET':
+        if transaction.payment_type.name == 'WALLET':
             user.wallet_balance -= transaction.amount
             user.session_var = ''
             transaction.paid = 'YES'
@@ -109,7 +109,7 @@ def payment():
             db.session.add(user)
             db.session.add(transaction)
             db.session.commit()
-            return redirect(url_for('users.account'))
+            return redirect(url_for('users.userrides'))
         else:
             form = PaymentForm()
             ride = RideLog.query.filter_by(ride_id = transaction.ride_id).first()
@@ -128,7 +128,7 @@ def payment():
                     db.session.add(user)
                     db.session.add(transaction)
                     db.session.commit()
-                    return redirect(url_for('core.index'))
+                    return redirect(url_for('users.userrides'))
             return render_template('payment.html', form = form, transaction = transaction, ride = ride, time = minutes)
     else:
         flash('No pending payments')

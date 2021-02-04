@@ -1,18 +1,14 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "account_layout.html" %}
+{% block account %}
 
 <div class="jumbotron">
-  <h1> Payment </h1>
-  <ul>
-    <li> Start Location: {{ride.start_location.name.capitalize()}} </li>
-    <li> End Location: {{ride.end_location.name.capitalize()}} </li>
-    <li> Time: {{time}} minutes</li>
-    <li> Amount: {{transaction.amount}} GBP</li>
-  </ul>
+  <h1> Add Wallet Balance </h1>
+  <p> Current Balance: {{user.wallet_balance}}</p>
 </div>
 
 <form method="POST">
   {{form.hidden_tag()}}
+  {{form.amount.label}}{{form.amount}}<br>
   <h6 class="text-uppercase">Payment details</h6>
   {{form.name.label}}{{form.name}}<br>
   {{form.card.label}}{{form.card}}<br>

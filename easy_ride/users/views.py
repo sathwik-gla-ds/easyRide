@@ -1,8 +1,8 @@
 from flask import render_template,url_for,flash,redirect,request,Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
 from easy_ride import db
-from easy_ride.models import User, LoginLog, RideLog
-from easy_ride.users.forms import RegistrationForm,LoginForm,UpdateUserForm
+from easy_ride.models import User, LoginLog, RideLog, Transaction
+from easy_ride.users.forms import RegistrationForm,LoginForm,UpdateUserForm,AddBalanceForm
 from easy_ride.users.picture_handler import add_profile_pic
 
 users = Blueprint('users',__name__)
@@ -96,13 +96,26 @@ def account():
     return render_template('account.html',profile_image=profile_image,form=form)
 
 
-@users.route('/wallet',methods=['GET','POST'])
+@users.route('/wallet')
 def wallet():
-    return render_template('wallet.html')
+    user = User.query.filter_by(id=current_user.id).first()
+    return render_template('wallet.html', user=user)
 
 
-@users.route('/userrides',methods=['GET','POST'])
+@users.route('/addbalance',methods=['GET','POST'])
+def addbalance():
+    form = AddBalanceForm()
+    user = User.query.filter_by(id=current_user.id).first()
+    if form.validate_on_submit():
+        user.wallet_balance += form.amount.data
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('users.wallet'))
+    return render_template('addbalance.html', form=form, user=user)
+
+
+@users.route('/userrides')
 def userrides():
     page = request.args.get('page', 1, type=int)
-    userrides = RideLog.query.filter_by(user_id=current_user.id).order_by(RideLog.end_time.desc()).paginate(page=page, per_page=5)
-    return render_template('userrides.html', userrides = userrides)
+    transactions = Transaction.query.filter_by(user_id=current_user.id, paid='YES').order_by(Transaction.time.desc()).paginate(page=page, per_page=5)
+    return render_template('userrides.html', transactions = transactions)

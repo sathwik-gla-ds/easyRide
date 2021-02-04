@@ -8,7 +8,7 @@ from flask_login import current_user
 from easy_ride.models import User
 
 class LoginForm(FlaskForm):
-    
+
     email = StringField('Email', validators = [DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Log In')
@@ -39,3 +39,22 @@ class UpdateUserForm(FlaskForm):
     email = StringField('Email', validators = [DataRequired(), Email()])
     city = SelectField('City', choices=['Glasgow'], validators=[DataRequired()])
     submit = SubmitField('Update Details')
+
+class AddBalanceForm(FlaskForm):
+    def check_card_number(self, field):
+        if field.data.isdigit():
+            if int(field.data) > 9999999999999999 or int(field.data) < 1000000000000000:
+                raise ValidationError('Your credit card number is not valid.')
+        else:
+            raise ValidationError('Your credit card number is not valid.')
+    def check_cvv_number(self, field):
+        if int(field.data) >999 or int(field.data) <100:
+            raise ValidationError('Invalid security code')
+
+    amount = IntegerField('Amount to add', validators=[DataRequired()]) 
+    name = StringField('Name on the card', validators=[DataRequired()])
+    card = StringField('Credit Card Number', validators=[DataRequired(), check_card_number])
+    month = SelectField('Expiry', validators=[DataRequired()], choices=['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'])
+    year = SelectField('Expiry', validators=[DataRequired()], choices=['2021', '2022','2023', '2024','2025', '2026','2027', '2028','2029','2030'])
+    cvv = StringField('Security Code', validators=[DataRequired(), check_cvv_number])
+    submit = SubmitField('Pay')
