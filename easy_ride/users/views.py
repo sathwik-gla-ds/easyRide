@@ -9,6 +9,7 @@ users = Blueprint('users',__name__)
 
 #Logout
 @users.route("/logout")
+@login_required
 def logout():
     logout_user()
     return redirect(url_for("core.index"))
@@ -97,12 +98,14 @@ def account():
 
 
 @users.route('/wallet')
+@login_required
 def wallet():
     user = User.query.filter_by(id=current_user.id).first()
     return render_template('wallet.html', user=user)
 
 
 @users.route('/addbalance',methods=['GET','POST'])
+@login_required
 def addbalance():
     form = AddBalanceForm()
     user = User.query.filter_by(id=current_user.id).first()
@@ -115,6 +118,7 @@ def addbalance():
 
 
 @users.route('/userrides')
+@login_required
 def userrides():
     page = request.args.get('page', 1, type=int)
     transactions = Transaction.query.filter_by(user_id=current_user.id, paid='YES').order_by(Transaction.time.desc()).paginate(page=page, per_page=5)

@@ -9,6 +9,7 @@ import random
 rides = Blueprint('rides', __name__)
 
 @rides.route('/rent',methods=['GET','POST'])
+@login_required
 def rent():
     current_rides = RideLog.query.filter_by(user_id = current_user.id, current = 'YES').first()
     payment = Transaction.query.filter_by(user_id = current_user.id, paid = 'NO').first()
@@ -43,6 +44,7 @@ def rent():
         return redirect(url_for('rides.payment'))
 
 @rides.route('/placeback',methods=['GET','POST'])
+@login_required
 def placeback():
     current_ride = RideLog.query.filter_by(user_id = current_user.id, current = 'YES').first()
     if current_ride is not None:
@@ -88,6 +90,7 @@ def placeback():
         return redirect(url_for('rides.rent'))
 
 @rides.route('/booking')
+@login_required
 def booking():
     current_ride = RideLog.query.filter_by(user_id = current_user.id, current = 'YES').first()
     if current_ride is not None:
@@ -97,6 +100,7 @@ def booking():
         return redirect(url_for('rides.rent'))
 
 @rides.route('/payment',methods=['GET','POST'])
+@login_required
 def payment():
     transaction = Transaction.query.filter_by(user_id=current_user.id, paid='NO').first()
     if transaction is not None:
