@@ -24,6 +24,8 @@ class PaymentType(enum.Enum):
 class BikeStatus(enum.Enum):
     YES = "Available"
     NO = "Not Available"
+    REPAIR = "In repair"
+    DISABLED = "No longer in service"
 
 class LocationNames(enum.Enum):
     HILLHEAD = "Hillhead, Glasgow"
@@ -36,9 +38,18 @@ class PaidStatus(enum.Enum):
     YES = "Paid"
     NO = "Not Paid"
 
+class RepairStatus(enum.Enum):
+    YES = "Repaired"
+    NO = "Not Repaired"
+
 class CurrentStatus(enum.Enum):
     YES = "Ride On Going"
     NO = "Ride Ended"
+
+class RepairUrgency(enum.Enum):
+    LOW = "Small repair"
+    MEDIUM = "Medium repair"
+    HIGH = "High Priority"
 
 class User(db.Model,UserMixin):
     __tablename__ = 'users'
@@ -74,6 +85,12 @@ class User(db.Model,UserMixin):
     def check_password(self,password):
         return check_password_hash(self.password_hash,password)
 
+    def add_wallet_balance(self, balance):
+        self.wallet_balance += balance
+
+    def deduct_wallat_balance(self, balance):
+        self.wallet_balance -= balance
+
     def __repr__(self):
         return f"Name {self.first_name} {self.last_name}"
 
@@ -97,6 +114,11 @@ class Transaction(db.Model):
         self.transaction_id = str(user_id) + str(payment_type) + str(datetime.utcnow())
         self.ride_id = ride_id
         self.paid = paid
+
+    def update_payment(self, credit_card_number=''):
+        self.credit_card_number = credit_card_number
+        self.paid = 'YES'
+        self.time = datetime.utcnow()
 
 class LoginLog(db.Model):
     __tablename__ = 'login_logs'
@@ -134,6 +156,11 @@ class BikeInfo(db.Model):
         else:
             return False
 
+    def place_back(self, loaction):
+        self.bike_pin = random.randint(1000,9999)
+        self.last_location = loaction
+        self.status = 'YES'
+
 class RideLog(db.Model):
     __tablename__ = 'ride_log'
 
@@ -156,3 +183,60 @@ class RideLog(db.Model):
         self.start_time = datetime.utcnow()
         self.ride_id = str(user_id) + str(bike_number) + str(self.start_time)
         self.current = current
+
+    def get_minutes(self, end_time):
+        time_delta = (end_time - self.start_time)
+        total_seconds = time_delta.total_seconds()
+        return 1 + int(total_seconds/60)
+
+    def end_ride(self, end_location):
+        self.end_location = end_location
+        self.end_time = datetime.utcnow()
+        self.current = 'NO'
+
+class Review(db.Model):
+    __tablename__ = 'reviews'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
+    ride_id = db.Column(db.String(64),db.ForeignKey('ride_log.ride_id'), unique=True)
+    reviewed_at = db.Column(db.DateTime)
+    rating = db.Column(db.Integer)
+    review = db.Column(db.Text)
+
+    def __init__(self, user_id, ride_id, rating, review):
+        self.user_id = user_id
+        self.ride_id = ride_id
+        self.rating = rating
+        self.review = review
+        self.reviewed_at = datetime.utcnow()
+
+class Repair(db.Model):
+    __tablename__ = 'repairs'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
+    bike_number = db.Column(db.Integer, db.ForeignKey('bike_info.bike_number'),nullable=False)
+    created_at = db.Column(db.DateTime)
+    description = db.Column(db.Text)
+    urgency = db.Column(db.Enum(RepairUrgency))
+    repair_status =  db.Column(db.Enum(RepairStatus))
+    operator_id = db.Column(db.Integer)
+    repaired_at = db.Column(db.DateTime)
+    level_of_repair = db.Column(db.Integer)
+    comment = db.Column(db.Text)
+
+    def __init__(self, user_id, bike_number, description, urgency):
+        self.user_id = user_id
+        self.bike_number = bike_number
+        self.description = description
+        self.urgency = urgency
+        self.created_at = datetime.utcnow()
+        self.repair_status = 'NO'
+
+    def repaired(self, operator_id, level_of_repair, comment):
+        self.operator_id = operator_id
+        self.level_of_repair = level_of_repair
+        self.comment = comment
+        self.repair_status = 'YES'
+        self.repaired_at = datetime.utcnow()

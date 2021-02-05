@@ -1,11 +1,11 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, IntegerField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField, SelectField, TextAreaField
 from wtforms.validators import DataRequired, Email, EqualTo
 from wtforms import ValidationError
 from flask_wtf.file import FileField, FileAllowed
 
 from flask_login import current_user
-from easy_ride.models import User
+from easy_ride.models import User, BikeInfo
 
 class LoginForm(FlaskForm):
 
@@ -51,10 +51,20 @@ class AddBalanceForm(FlaskForm):
         if int(field.data) >999 or int(field.data) <100:
             raise ValidationError('Invalid security code')
 
-    amount = IntegerField('Amount to add', validators=[DataRequired()]) 
+    amount = IntegerField('Amount to add', validators=[DataRequired()])
     name = StringField('Name on the card', validators=[DataRequired()])
     card = StringField('Credit Card Number', validators=[DataRequired(), check_card_number])
     month = SelectField('Expiry', validators=[DataRequired()], choices=['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'])
     year = SelectField('Expiry', validators=[DataRequired()], choices=['2021', '2022','2023', '2024','2025', '2026','2027', '2028','2029','2030'])
     cvv = StringField('Security Code', validators=[DataRequired(), check_cvv_number])
     submit = SubmitField('Pay')
+
+class ReportBikeForm(FlaskForm):
+    def bike_num_check(self, field):
+        if not BikeInfo.query.filter_by(bike_number=field.data).first():
+            raise ValidationError('No bike found with the given number')
+
+    bike_number = IntegerField('Bike Number', validators=[DataRequired(), bike_num_check])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    urgency = SelectField('Level of priority', validators=[DataRequired()], choices=['LOW', 'MEDIUM', 'HIGH'])
+    submit = SubmitField('Submit')

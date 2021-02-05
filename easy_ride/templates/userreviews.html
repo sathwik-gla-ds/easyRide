@@ -1,0 +1,42 @@
+{% extends "account_layout.html" %}
+{% block account %}
+
+  <div class="jumbotron">
+    <h1> Reviews </h1>
+  </div>
+
+  <div class="container">
+    <div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Rating</th>
+            <th scope="col">Review</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for review in reviews.items %}
+          <tr>
+            <th scope="row">{{review.reviewed_at.strftime('%d-%m-%Y')}}</th>
+            <td>{{review.rating}}</td>
+            <td>{{review.review}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        </table>
+
+        <nav aria-label="Page navigation example">
+         <ul class="pagination justify-content-center">
+           {% for page_num in reviews.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+              {% if reviews.page == page_num %}
+              <li class="page-item disabled">
+                <a class="page-link" href="{{ url_for('users.userreviews', page=page_num) }}">{{ page_num }}</a></li>
+              </li>
+              {% else %}
+                <li class="page-item"><a class="page-link" href="{{ url_for('users.userreviews', page=page_num) }}">{{ page_num }}</a></li>
+              {% endif %}
+          {% endfor %}
+        </nav>
+      </div>
+{% endblock %}

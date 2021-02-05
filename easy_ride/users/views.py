@@ -1,8 +1,8 @@
 from flask import render_template,url_for,flash,redirect,request,Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
 from easy_ride import db
-from easy_ride.models import User, LoginLog, RideLog, Transaction
-from easy_ride.users.forms import RegistrationForm,LoginForm,UpdateUserForm,AddBalanceForm
+from easy_ride.models import User, LoginLog, RideLog, Transaction, Review, Repair, BikeInfo
+from easy_ride.users.forms import RegistrationForm,LoginForm,UpdateUserForm,AddBalanceForm,ReportBikeForm
 from easy_ride.users.picture_handler import add_profile_pic
 
 users = Blueprint('users',__name__)
@@ -41,26 +41,19 @@ def login():
 
     form = LoginForm()
     if form.validate_on_submit():
-
         user = User.query.filter_by(email=form.email.data).first()
-
         if user is not None:
             if user.check_password(form.password.data):
-
                 login_user(user)
                 flash('Logged in Successfully!')
-
                 next = request.args.get('next')
-
                 if next ==None or not next[0]=='/':
                     next = url_for('core.index')
-
                 return redirect(next)
             else:
                 flash('please enter the correct password!')
         else:
             flash('This email id is not registered with us!')
-
     return render_template('login.html',form=form)
 
 # account (update UserForm)
@@ -110,7 +103,7 @@ def addbalance():
     form = AddBalanceForm()
     user = User.query.filter_by(id=current_user.id).first()
     if form.validate_on_submit():
-        user.wallet_balance += form.amount.data
+        user.add_wallet_balance(form.amount.data)
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('users.wallet'))
@@ -121,5 +114,29 @@ def addbalance():
 @login_required
 def userrides():
     page = request.args.get('page', 1, type=int)
-    transactions = Transaction.query.filter_by(user_id=current_user.id, paid='YES').order_by(Transaction.time.desc()).paginate(page=page, per_page=5)
+    transactions = Transaction.query.filter_by(user_id=current_user.id, paid='YES').order_by(Transaction.time.desc()).paginate(page=page, per_page=10)
     return render_template('userrides.html', transactions = transactions)
+
+
+@users.route('/userreviews')
+@login_required
+def userreviews():
+    page = request.args.get('page', 1, type=int)
+    reviews = Review.query.filter_by(user_id=current_user.id).order_by(Review.reviewed_at.desc()).paginate(page=page, per_page=10)
+    return render_template('userreviews.html', reviews = reviews)
+
+
+@users.route('/reportbike',methods=['GET','POST'])
+@login_required
+def reportbike():
+    form = ReportBikeForm()
+    if form.validate_on_submit():
+        repair = Repair(user_id = current_user.id, bike_number = form.bike_number.data, description = form.bike_number.data, urgency=form.urgency.data)
+        bike = BikeInfo.query.filter_by(bike_number=form.bike_number.data).first()
+        if not form.urgency.data == 'LOW':
+            bike.status = 'REPAIR'
+        db.session.add_all([repair,bike])
+        db.session.commit()
+        flash('Successfully Reported')
+        return redirect(url_for('users.reportbike'))
+    return render_template('reportbike.html', form = form)

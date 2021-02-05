@@ -21,7 +21,7 @@
         <tbody>
           {% for transaction in transactions.items %}
           <tr>
-            <th scope="row">{{transaction.time.strftime('%Y-%m-%d')}}</th>
+            <th scope="row">{{transaction.time.strftime('%d-%m-%Y')}}</th>
             <td>{{transaction.ride.start_location.name.capitalize()}}</td>
             <td>{{transaction.ride.end_location.name.capitalize()}}</td>
             <td>{{(transaction.amount - 1)/0.2 + 1}} minutes</td>

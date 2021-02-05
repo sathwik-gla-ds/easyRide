@@ -1,0 +1,16 @@
+{% extends "account_layout.html" %}
+{% block account %}
+
+<div class="jumbotron">
+  <h1> Report a defective bike </h1>
+</div>
+
+<form method="POST">
+  {{form.hidden_tag()}}
+  {{form.bike_number.label}} {{form.bike_number}}<br>
+  {{form.description.label}} {{form.description}}<br>
+  {{form.urgency.label}} {{form.urgency}}<br>
+  {{form.submit}}
+</form>
+
+{% endblock %}

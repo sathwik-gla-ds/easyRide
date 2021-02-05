@@ -1,7 +1,7 @@
 from flask import render_template,url_for,flash,redirect,request,Blueprint
 from flask_login import current_user,login_required
 from easy_ride.rides.forms import StartRideForm, StopRideForm, PaymentForm
-from easy_ride.models import User, Transaction, LoginLog, BikeInfo, RideLog
+from easy_ride.models import User, Transaction, LoginLog, BikeInfo, RideLog, Review
 from datetime import datetime
 from easy_ride import db
 import random
@@ -27,9 +27,7 @@ def rent():
                     bike.status = 'NO'
                     user = User.query.filter_by(id=current_user.id).first()
                     user.session_var = 'RENTED'
-                    db.session.add(user)
-                    db.session.add(ride)
-                    db.session.add(bike)
+                    db.session.add_all([user, ride, bike])
                     db.session.commit()
 
                     return redirect(url_for('rides.booking'))
@@ -51,21 +49,13 @@ def placeback():
         bike = BikeInfo.query.filter_by(bike_number=current_ride.bike_number).first()
         form = StopRideForm()
         if form.validate_on_submit():
-            time_delta = (datetime.utcnow() - current_ride.start_time)
-            total_seconds = time_delta.total_seconds()
-            minutes = 1 + int(total_seconds/60)
+            minutes = current_ride.get_minutes(datetime.utcnow())
             amount = 1 + int(minutes*0.2)
             user = User.query.filter_by(id=current_user.id).first()
 
             if (form.payment_type.data == "Credit Card") or (form.payment_type.data == "Wallet" and user.wallet_balance > amount):
-                current_ride.end_location = form.location.data
-                current_ride.end_time = datetime.utcnow()
-                current_ride.current = 'NO'
-
-                bike.bike_pin = random.randint(1000,9999)
-                bike.last_location = form.location.data
-                bike.status = 'YES'
-
+                current_ride.end_ride(form.location.data)
+                bike.place_back(form.location.data)
                 if form.payment_type.data == "Credit Card":
                     payment_type = 'CARD'
                 else:
@@ -77,9 +67,10 @@ def placeback():
                                            ride_id = current_ride.ride_id,
                                            paid = 'NO')
                 user.session_var = 'PAYMENT'
-                db.session.add(current_ride)
-                db.session.add(bike)
-                db.session.add(transaction)
+                if form.rating.data:
+                    review = Review(current_ride.user_id, current_ride.ride_id, form.rating.data, form.review.data)
+                    db.session.add(review)
+                db.session.add_all([current_ride, bike, transaction])
                 db.session.commit()
 
                 return redirect(url_for('rides.payment'))
@@ -106,34 +97,26 @@ def payment():
     if transaction is not None:
         user = User.query.filter_by(id=current_user.id).first()
         if transaction.payment_type.name == 'WALLET':
-            user.wallet_balance -= transaction.amount
+            user.deduct_wallat_balance(transaction.amount)
             user.session_var = ''
-            transaction.paid = 'YES'
-            transaction.time = datetime.utcnow()
-            db.session.add(user)
-            db.session.add(transaction)
+            transaction.update_payment()
+            db.session.add_all([user, transaction])
             db.session.commit()
             return redirect(url_for('users.userrides'))
         else:
             form = PaymentForm()
             ride = RideLog.query.filter_by(ride_id = transaction.ride_id).first()
-            time_delta = (ride.end_time - ride.start_time)
-            total_seconds = time_delta.total_seconds()
-            minutes = 1 + int(total_seconds/60)
             if form.validate_on_submit():
                 today = datetime.today()
                 if form.year.data == '2021' and int(form.month.data)<today.month:
                     flash('The expiry date cannot be before today')
                 else:
-                    transaction.credit_card_number = form.card.data
-                    transaction.paid = 'YES'
-                    transaction.time = datetime.utcnow()
+                    transaction.update_payment(form.card.data)
                     user.session_var = ''
-                    db.session.add(user)
-                    db.session.add(transaction)
+                    db.session.add_all([user, transaction])
                     db.session.commit()
                     return redirect(url_for('users.userrides'))
-            return render_template('payment.html', form = form, transaction = transaction, ride = ride, time = minutes)
+            return render_template('payment.html', form = form, transaction = transaction, ride = ride, time = ride.get_minutes(ride.end_time))
     else:
         flash('No pending payments')
         return redirect(url_for('rides.rent'))
