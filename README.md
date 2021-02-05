@@ -1,3 +1,5 @@
+Directory Structure: 
+
 EasyRide
 |   app.py (File which launches the flask application)
 |   requirements.txt (The required python libraries for the application)
