@@ -11,6 +11,7 @@
         <thead>
           <tr>
             <th scope="col">Date</th>
+            <th scope="col">Bike Number</th>
             <th scope="col">Start Location</th>
             <th scope="col">End Location</th>
             <th scope="col">Time Taken</th>
@@ -22,6 +23,7 @@
           {% for transaction in transactions.items %}
           <tr>
             <th scope="row">{{transaction.time.strftime('%d-%m-%Y')}}</th>
+            <td>{{transaction.ride.bike.bike_number}}</td>
             <td>{{transaction.ride.start_location.name.capitalize()}}</td>
             <td>{{transaction.ride.end_location.name.capitalize()}}</td>
             <td>{{(transaction.amount - 1)/0.2 + 1}} minutes</td>
