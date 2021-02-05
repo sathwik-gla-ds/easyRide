@@ -1,5 +1,6 @@
-Directory Structure: 
+## Directory Structure: 
 
+```
 EasyRide
 |   app.py (File which launches the flask application)
 |   requirements.txt (The required python libraries for the application)
@@ -59,3 +60,4 @@ EasyRide
 |   |   |   picture_handler.py (contains the function for updating the profile picture)
 |   |   |   views.py (contains the routes related to users functionality)
 |   |   |   
+```
