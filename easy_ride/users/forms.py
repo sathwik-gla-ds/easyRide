@@ -32,7 +32,7 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Register')
 
 class UpdateUserForm(FlaskForm):
-    picture = FileField('Update profile picture', validators=[FileAllowed(['jpg','png'])])
+    picture = FileField('Update profile picture', validators=[FileAllowed(['jpg','png','jpeg'])])
     first_name = StringField('First Name', validators=[DataRequired()])
     last_name = StringField('Last Name', validators=[DataRequired()])
     phone_number = IntegerField('Phone Number', validators=[DataRequired()])

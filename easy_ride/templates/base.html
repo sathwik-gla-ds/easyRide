@@ -37,7 +37,7 @@
                   <li><a class="dropdown-item" href="{{url_for('core.aboutus')}}">About Us</a></li>
                 </ul>
               </li>
-            </ul>            
+            </ul>
             <ul class="navbar-nav justify-content-end mb-2 mb-lg-0">
               {% if current_user.is_authenticated %}
                 {% if current_user.session_var == 'RENTED' %}
