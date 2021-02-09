@@ -5,11 +5,13 @@ from easy_ride.models import User, Transaction, LoginLog, BikeInfo, RideLog, Rev
 from datetime import datetime
 from easy_ride import db
 import random
+from easy_ride.helpers import check_user_type
 
 rides = Blueprint('rides', __name__)
 
 @rides.route('/rent',methods=['GET','POST'])
 @login_required
+@check_user_type('NORMAL')
 def rent():
     current_rides = RideLog.query.filter_by(user_id = current_user.id, current = 'YES').first()
     payment = Transaction.query.filter_by(user_id = current_user.id, paid = 'NO').first()
@@ -41,8 +43,10 @@ def rent():
         flash("Please pay for the previous ride before you book another")
         return redirect(url_for('rides.payment'))
 
+
 @rides.route('/placeback',methods=['GET','POST'])
 @login_required
+@check_user_type('NORMAL')
 def placeback():
     current_ride = RideLog.query.filter_by(user_id = current_user.id, current = 'YES').first()
     if current_ride is not None:
@@ -80,8 +84,10 @@ def placeback():
     else:
         return redirect(url_for('rides.rent'))
 
+
 @rides.route('/booking')
 @login_required
+@check_user_type('NORMAL')
 def booking():
     current_ride = RideLog.query.filter_by(user_id = current_user.id, current = 'YES').first()
     if current_ride is not None:
@@ -90,8 +96,10 @@ def booking():
     else:
         return redirect(url_for('rides.rent'))
 
+
 @rides.route('/payment',methods=['GET','POST'])
 @login_required
+@check_user_type('NORMAL')
 def payment():
     transaction = Transaction.query.filter_by(user_id=current_user.id, paid='NO').first()
     if transaction is not None:

@@ -4,6 +4,8 @@ from easy_ride import db
 from easy_ride.models import User, LoginLog, RideLog, Transaction, Review, Repair, BikeInfo, TopUp
 from easy_ride.users.forms import RegistrationForm,LoginForm,UpdateUserForm,AddBalanceForm,ReportBikeForm
 from easy_ride.users.picture_handler import add_profile_pic
+from easy_ride.helpers import check_user_type
+
 
 users = Blueprint('users',__name__)
 
@@ -38,17 +40,26 @@ def register():
 # login
 @users.route('/login',methods=['GET','POST'])
 def login():
-
+    if current_user.is_authenticated:
+        logout_user()
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = User.query.filter_by(email=form.email.data, user_status='NORMAL').first()
         if user is not None:
             if user.check_password(form.password.data):
                 login_user(user)
                 flash('Logged in Successfully!')
+                login_log = LoginLog(user.id, user.user_type.name)
+                db.session.add(login_log)
+                db.session.commit()
                 next = request.args.get('next')
                 if next ==None or not next[0]=='/':
-                    next = url_for('core.index')
+                    if user.user_type.name == 'NORMAL':
+                        next = url_for('core.index')
+                    elif user.user_type.name == 'OPERATOR':
+                        next = url_for('employees.operator_view')
+                    else:
+                        next = url_for('employees.manager_view')
                 return redirect(next)
             else:
                 flash('please enter the correct password!')
@@ -56,11 +67,12 @@ def login():
             flash('This email id is not registered with us!')
     return render_template('login.html',form=form)
 
+
 # account (update UserForm)
 @users.route('/account',methods=['GET','POST'])
 @login_required
+@check_user_type('NORMAL')
 def account():
-
     form = UpdateUserForm()
     if form.validate_on_submit():
 
@@ -92,6 +104,7 @@ def account():
 
 @users.route('/wallet')
 @login_required
+@check_user_type('NORMAL')
 def wallet():
     user = User.query.filter_by(id=current_user.id).first()
     page = request.args.get('page', 1, type=int)
@@ -101,6 +114,7 @@ def wallet():
 
 @users.route('/addbalance',methods=['GET','POST'])
 @login_required
+@check_user_type('NORMAL')
 def addbalance():
     form = AddBalanceForm()
     user = User.query.filter_by(id=current_user.id).first()
@@ -117,6 +131,7 @@ def addbalance():
 
 @users.route('/userrides')
 @login_required
+@check_user_type('NORMAL')
 def userrides():
     page = request.args.get('page', 1, type=int)
     transactions = Transaction.query.filter_by(user_id=current_user.id, paid='YES').order_by(Transaction.time.desc()).paginate(page=page, per_page=10)
@@ -125,14 +140,15 @@ def userrides():
 
 @users.route('/userreviews')
 @login_required
+@check_user_type('NORMAL')
 def userreviews():
     page = request.args.get('page', 1, type=int)
     reviews = Review.query.filter_by(user_id=current_user.id).order_by(Review.reviewed_at.desc()).paginate(page=page, per_page=10)
     return render_template('userreviews.html', reviews = reviews)
 
-
 @users.route('/reportbike',methods=['GET','POST'])
 @login_required
+@check_user_type('NORMAL')
 def reportbike():
     form = ReportBikeForm()
     if form.validate_on_submit():

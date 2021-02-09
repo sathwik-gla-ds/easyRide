@@ -40,6 +40,7 @@
             </ul>
             <ul class="navbar-nav justify-content-end mb-2 mb-lg-0">
               {% if current_user.is_authenticated %}
+                {% if current_user.user_type.name == 'NORMAL' %}
                 {% if current_user.session_var == 'RENTED' %}
                 <li class="nav-item">
                   <a class="nav-link" href="{{url_for('rides.booking')}}">Booking</a>
@@ -57,11 +58,26 @@
                 </li>
                 {% endif %}
               <li class="nav-item">
-                <a class="nav-link" href="{{url_for('users.logout')}}">Logout</a>
-              </li>
-              <li class="nav-item">
                 <a class="nav-link" href="{{url_for('users.account')}}">Account</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('users.logout')}}">Logout</a>
+              </li>
+              {% elif current_user.user_type.name == 'OPERATOR' %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('employees.operator_view')}}">Operator's View</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('users.logout')}}">Logout</a>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('employees.manager_view')}}">Manager's View</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('users.logout')}}">Logout</a>
+              </li>
+              {% endif %}
               {% else %}
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('users.login')}}">Login</a>

@@ -46,6 +46,11 @@ class CurrentStatus(enum.Enum):
     YES = "Ride On Going"
     NO = "Ride Ended"
 
+class UserStatus(enum.Enum):
+    NORMAL = "Active account"
+    BANNED = "Banned account"
+    DELETED = "Account deleted"
+
 class RepairUrgency(enum.Enum):
     LOW = "Small repair"
     MEDIUM = "Medium repair"
@@ -68,6 +73,7 @@ class User(db.Model,UserMixin):
     user_type = db.Column(db.Enum(UserType))
     wallet_balance = db.Column(db.Float, default=0)
     session_var = db.Column(db.String(64))
+    user_status = db.Column(db.Enum(UserStatus))
 
     rides = db.relationship('Transaction',backref='user',lazy=True)
     login_log = db.relationship('LoginLog',backref='user',lazy=True)
@@ -82,6 +88,7 @@ class User(db.Model,UserMixin):
         self.email = email
         self.password_hash = generate_password_hash(password)
         self.user_type = user_type
+        self.user_status = 'NORMAL'
 
     def check_password(self,password):
         return check_password_hash(self.password_hash,password)
@@ -122,6 +129,8 @@ class Transaction(db.Model):
         self.time = datetime.utcnow()
 
 class TopUp(db.Model):
+    __tablename__ = 'topup_logs'
+
     id = db.Column(db.Integer,primary_key=True)
     transaction_id = db.Column(db.String(64),unique=True)
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
@@ -145,7 +154,7 @@ class LoginLog(db.Model):
     logged_at = db.Column(db.DateTime)
     user_type = db.Column(db.Enum(UserType))
 
-    def __init__(self, user_id, user_type, logged_at):
+    def __init__(self, user_id, user_type):
         self.user_id = user_id
         self.user_type = user_type
         self.logged_at = datetime.utcnow()
