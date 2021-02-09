@@ -24,7 +24,3 @@ def aboutus():
 @core.route('/pricing')
 def pricing():
     return render_template('pricing.html')
-
-@core.route('/', subdomain = 'employee')
-def employee():
-    return render_template('pricing.html')

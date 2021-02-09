@@ -1,7 +1,7 @@
 from flask import render_template,url_for,flash,redirect,request,Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
 from easy_ride import db
-from easy_ride.models import User, LoginLog, RideLog, Transaction, Review, Repair, BikeInfo
+from easy_ride.models import User, LoginLog, RideLog, Transaction, Review, Repair, BikeInfo, TopUp
 from easy_ride.users.forms import RegistrationForm,LoginForm,UpdateUserForm,AddBalanceForm,ReportBikeForm
 from easy_ride.users.picture_handler import add_profile_pic
 
@@ -94,7 +94,9 @@ def account():
 @login_required
 def wallet():
     user = User.query.filter_by(id=current_user.id).first()
-    return render_template('wallet.html', user=user)
+    page = request.args.get('page', 1, type=int)
+    topups = TopUp.query.filter_by(user_id=current_user.id).order_by(TopUp.time.desc()).paginate(page=page, per_page=10)
+    return render_template('wallet.html', user=user, transactions = topups)
 
 
 @users.route('/addbalance',methods=['GET','POST'])
@@ -104,7 +106,10 @@ def addbalance():
     user = User.query.filter_by(id=current_user.id).first()
     if form.validate_on_submit():
         user.add_wallet_balance(form.amount.data)
-        db.session.add(user)
+        topup = TopUp(user_id = user.id,
+                       credit_card_number = form.card.data,
+                       amount = form.amount.data)
+        db.session.add_all([user,topup])
         db.session.commit()
         return redirect(url_for('users.wallet'))
     return render_template('addbalance.html', form=form, user=user)

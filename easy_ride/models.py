@@ -51,6 +51,7 @@ class RepairUrgency(enum.Enum):
     MEDIUM = "Medium repair"
     HIGH = "High Priority"
 
+
 class User(db.Model,UserMixin):
     __tablename__ = 'users'
 
@@ -119,6 +120,22 @@ class Transaction(db.Model):
         self.credit_card_number = credit_card_number
         self.paid = 'YES'
         self.time = datetime.utcnow()
+
+class TopUp(db.Model):
+    id = db.Column(db.Integer,primary_key=True)
+    transaction_id = db.Column(db.String(64),unique=True)
+    user_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
+    credit_card_number = db.Column(db.String(16))
+    amount = db.Column(db.Float)
+    time = db.Column(db.DateTime)
+
+    def __init__(self, user_id, credit_card_number, amount):
+        self.user_id = user_id
+        self.credit_card_number = credit_card_number
+        self.amount = amount
+        self.transaction_id = str(user_id) + str(amount) + str(datetime.utcnow())
+        self.time = datetime.utcnow()
+
 
 class LoginLog(db.Model):
     __tablename__ = 'login_logs'
