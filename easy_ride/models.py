@@ -79,6 +79,7 @@ class User(db.Model,UserMixin):
     login_log = db.relationship('LoginLog',backref='user',lazy=True)
     ride_log = db.relationship('RideLog',backref='user',lazy=True)
     reviews = db.relationship('Review',backref='user',lazy=True)
+    repairs = db.relationship('Repair',backref='user',lazy=True)
 
     def __init__(self,first_name, last_name, phone_number, email,password, city, user_type):
         self.first_name = first_name

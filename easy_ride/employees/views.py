@@ -64,6 +64,8 @@ def check_bikes():
 @check_user_type('OPERATOR')
 def repair_bike():
     form = RepairBikeForm()
+    page = request.args.get('page', 1, type=int)
+    repairs = Repair.query.filter_by(repair_status = 'NO').paginate(page=page, per_page=20)
 
     if form.validate_on_submit():
         repair = Repair.query.filter_by(bike_number=form.bike_number.data, repair_status='NO').first()
@@ -75,7 +77,7 @@ def repair_bike():
         flash('Repair success!')
         return redirect(url_for('employees.check_bikes', bike_num=bike.bike_number))
 
-    return render_template('repair_bike.html', form=form)
+    return render_template('repair_bike.html', form=form, repairs=repairs)
 
 
 @employees.route("/move_bike",methods=['GET','POST'])
