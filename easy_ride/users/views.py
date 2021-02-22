@@ -44,7 +44,7 @@ def login():
         logout_user()
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data, user_status='NORMAL').first()
+        user = User.query.filter_by(email=form.email.data.lower(), user_status='NORMAL').first()
         if user is not None:
             if user.check_password(form.password.data):
                 login_user(user)
@@ -161,3 +161,16 @@ def reportbike():
         flash('Successfully Reported')
         return redirect(url_for('users.reportbike'))
     return render_template('reportbike.html', form = form)
+
+
+@users.route("/user/<int:user_id>")
+@login_required
+@check_user_type(['OPERATOR', 'MANAGER'])
+def user_info(user_id):
+    page = [request.args.get('p1', 1, type=int), request.args.get('p2', 1, type=int), request.args.get('p3', 1, type=int), request.args.get('p4', 1, type=int)]
+    user = User.query.filter_by(id=user_id).first_or_404()
+    topups = TopUp.query.filter_by(user_id=user.id).order_by(TopUp.time.desc()).paginate(page=page[0], per_page=5)
+    transactions = Transaction.query.filter_by(user_id=user.id, paid='YES').order_by(Transaction.time.desc()).paginate(page=page[1], per_page=5)
+    reviews = Review.query.filter_by(user_id=user.id).order_by(Review.reviewed_at.desc()).paginate(page=page[2], per_page=5)
+    reports = Repair.query.filter_by(user_id=user.id).order_by(Repair.created_at.desc()).paginate(page=page[3], per_page=5)
+    return render_template('user_info.html', user=user, topups=topups, transactions=transactions, reviews=reviews, reports=reports, p1=page[0], p2=page[1], p3=page[2], p4=page[3], user_type = current_user.user_type.name)

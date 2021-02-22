@@ -1,9 +1,173 @@
 {% extends "employee_layout.html" %}
 {% block content %}
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+<script src='static/js/chart_config.js'></script>
 <div class="jumbotron">
   <h1> Manager Dashboard </h1>
-  <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 </div>
+<hr class="solid">
+<ul class="nav nav-pills nav-fill">
+  {% if time=='day'%}
+  <li class="nav-item">
+    <a class="nav-link active" href="{{url_for('employees.manager_view', time='day')}}">Last 7 days</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{url_for('employees.manager_view', time='month')}}">Last 6 months</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{url_for('employees.manager_view', time='year')}}">All time</a>
+  </li>
+  {% elif time=='month' %}
+  <li class="nav-item">
+    <a class="nav-link" href="{{url_for('employees.manager_view', time='day')}}">Last 7 days</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="{{url_for('employees.manager_view', time='month')}}">Last 6 months</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{url_for('employees.manager_view', time='year')}}">All time</a>
+  </li>
+  {%else%}
+  <li class="nav-item">
+    <a class="nav-link" href="{{url_for('employees.manager_view', time='day')}}">Last 7 days</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{url_for('employees.manager_view', time='month')}}">Last 6 months</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="{{url_for('employees.manager_view', time='year')}}">All time</a>
+  </li>
+  {%endif%}
+</ul>
+
+<hr class="solid"><br>
+
+<div class="container">
+  <h4> Payments </h4><br>
+  <div class="row">
+    <div class="col-sm">
+        <canvas id="sales" width="6" height="3"></canvas>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm">
+        <canvas id="walletvscardtimes" width="4" height="3"></canvas>
+    </div>
+    <div class="col-sm">
+        <canvas id="walletvscardamount" width="4" height="3"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- <hr class="dashed"> <hr class="solid"> <hr class="dotted"> -->
+<br><br><hr class="solid"><br>
+
+<div class="container">
+  <h4> Rides </h4><br>
+  <div class="row">
+      <div class="col-sm-8">
+          <canvas id="totalrides" width="4" height="3"></canvas>
+      </div>
+    <div class="col-sm-4">
+      <div class="row">
+        <div class="col-sm">
+            <canvas id="availablebikes" width="4" height="3"></canvas>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm">
+            <canvas id="popularlocations" width="4" height="3"></canvas>
+        </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<br><br><hr class="solid"><br>
+
+<div class="container">
+  <h4> Users </h4><br>
+  <div class="row">
+    <div class="col-sm">
+        <canvas id="newusers" width="4" height="3"></canvas>
+    </div>
+    <div class="col-sm">
+        <canvas id="logins" width="4" height="3"></canvas>
+    </div>
+  </div>
+</div>
+
+<br><br><hr class="solid"><br>
+
+
+<div class="container">
+  <h4> Ratings </h4><br>
+  <div class="row">
+    <div class="col-sm-4">
+        <canvas id="ratings" width="4" height="3"></canvas>
+    </div>
+    <div class="col-sm-8">
+        <h5>Latest comments</h5>
+      <div class="ratio ratio-21x9">
+      <div class="overflow-auto">
+        {% for comment in comments %}
+        <div class="card" >
+          <div class="card-body">
+            <h6>{{ comment.review }}</h6>
+            <div class="row">
+            <div class="col-sm">
+                <p class="card-text"> Rating: {{ comment.rating }}</p>
+            </div>
+              <div class="col-sm">
+                  <p>By: <a href="{{ url_for('users.user_info', user_id=comment.user_id) }}">{{comment.user.first_name.capitalize()}} {{comment.user.last_name.capitalize()}}</a></p>
+              </div>
+              <div class="col-sm">
+                  <p>Reviewed on: {{ comment.reviewed_at.strftime('%Y-%m-%d') }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br><br><hr class="solid"><br>
+
+<div class="container">
+  <h4> Repairs </h4><br>
+  <div class="row">
+    <div class="col-sm">
+        <canvas id="pendingrepairs" width="4" height="3"></canvas>
+    </div>
+    <div class="col-sm">
+        <canvas id="completedrepairs" width="4" height="3"></canvas>
+    </div>
+  </div>
+</div>
+
+<br><br><hr class="solid"><br>
+
+<script>
+
+new Chart(document.getElementById("newusers").getContext("2d"), bar_chart_config({{new_reg|tojson}}, 'New Users', 'bar'))
+new Chart(document.getElementById("logins").getContext("2d"), line_chart_config({{login_log|tojson}}, 'Unique User Logins', 'date', 'count', false))
+
+new Chart(document.getElementById("totalrides").getContext("2d"), line_chart_config({{ride_log|tojson}}, 'Total rides', 'date', 'count', false))
+new Chart(document.getElementById("availablebikes").getContext("2d"), pie_chart_config({{avl_bikes|tojson}}, 'Available bikes', 'doughnut', 'half'))
+new Chart(document.getElementById("popularlocations").getContext("2d"), pie_chart_config({{pop_loc|tojson}}, 'Locations popularity', 'pie', 'half'))
+
+new Chart(document.getElementById("sales").getContext("2d"), line_chart_config({{total_sales|tojson}}, 'Total Sales', 'date', 'amount', false))
+new Chart(document.getElementById("walletvscardtimes").getContext("2d"), radar_chart_config([{{pay_type_wallet|tojson}}, {{pay_type_card|tojson}}], ['wallet','card'], 'Wallet vs Card Times'))
+new Chart(document.getElementById("walletvscardamount").getContext("2d"), radar_chart_config([{{pay_amount_wallet|tojson}}, {{pay_amount_card|tojson}}], ['wallet','card'], 'Wallet vs Card Amount'))
+
+new Chart(document.getElementById("ratings").getContext("2d"), pie_chart_config({{ratings|tojson}}, 'Ratings', 'pie', 'full'))
+
+new Chart(document.getElementById("pendingrepairs").getContext("2d"), bar_chart_config({{pending_repairs|tojson}}, 'Pending repairs', 'horizontalBar'))
+new Chart(document.getElementById("completedrepairs").getContext("2d"), bar_chart_config({{completed_repairs|tojson}}, 'Completed repairs', 'horizontalBar'))
+</script>
+
 
 {% endblock %}

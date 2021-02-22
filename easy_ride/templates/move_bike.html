@@ -1,0 +1,14 @@
+{% extends "employee_layout.html" %}
+{% block content %}
+
+<div class="jumbotron">
+  <h1> Move Bike </h1>
+</div>
+
+<form method="POST">
+  {{form.hidden_tag()}}
+  {{form.bike_number.label}} {{form.bike_number}}<br>
+  {{form.new_location.label}} {{form.new_location}}<br>
+  {{form.submit}}
+</form>
+{% endblock %}

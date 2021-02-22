@@ -78,6 +78,7 @@ class User(db.Model,UserMixin):
     rides = db.relationship('Transaction',backref='user',lazy=True)
     login_log = db.relationship('LoginLog',backref='user',lazy=True)
     ride_log = db.relationship('RideLog',backref='user',lazy=True)
+    reviews = db.relationship('Review',backref='user',lazy=True)
 
     def __init__(self,first_name, last_name, phone_number, email,password, city, user_type):
         self.first_name = first_name
@@ -85,7 +86,7 @@ class User(db.Model,UserMixin):
         self.created_at = datetime.utcnow()
         self.phone_number = phone_number
         self.city = city
-        self.email = email
+        self.email = email.lower()
         self.password_hash = generate_password_hash(password)
         self.user_type = user_type
         self.user_status = 'NORMAL'
@@ -186,6 +187,7 @@ class BikeInfo(db.Model):
         self.bike_pin = random.randint(1000,9999)
         self.last_location = loaction
         self.status = 'YES'
+
 
 class RideLog(db.Model):
     __tablename__ = 'ride_log'

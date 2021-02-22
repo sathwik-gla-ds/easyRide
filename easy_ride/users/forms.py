@@ -8,7 +8,6 @@ from flask_login import current_user
 from easy_ride.models import User, BikeInfo
 
 class LoginForm(FlaskForm):
-
     email = StringField('Email', validators = [DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Log In')
@@ -24,8 +23,8 @@ class RegistrationForm(FlaskForm):
 
     first_name = StringField('First Name', validators=[DataRequired()])
     last_name = StringField('Last Name', validators=[DataRequired()])
-    phone_number = IntegerField('Phone Number', validators=[DataRequired(), check_email_reg])
-    email = StringField('Email', validators = [DataRequired(), Email(), check_phone_reg])
+    phone_number = IntegerField('Phone Number', validators=[DataRequired(), check_phone_reg])
+    email = StringField('Email', validators = [DataRequired(), Email(), check_email_reg])
     password = PasswordField('Password', validators=[DataRequired(), EqualTo('confirm_password',message='passwords do not match!')])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired()])
     city = SelectField('City', choices=['GLASGOW'], validators=[DataRequired()])
@@ -54,8 +53,8 @@ class AddBalanceForm(FlaskForm):
     amount = IntegerField('Amount to add', validators=[DataRequired()])
     name = StringField('Name on the card', validators=[DataRequired()])
     card = StringField('Credit Card Number', validators=[DataRequired(), check_card_number])
-    month = SelectField('Expiry', validators=[DataRequired()], choices=['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'])
-    year = SelectField('Expiry', validators=[DataRequired()], choices=['2021', '2022','2023', '2024','2025', '2026','2027', '2028','2029','2030'])
+    month = SelectField('Expiry', validators=[DataRequired()], choices=['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'], render_kw={'class':'form-select'})
+    year = SelectField('Expiry', validators=[DataRequired()], choices=['2021', '2022','2023', '2024','2025', '2026','2027', '2028','2029','2030'], render_kw={'class':'form-select'})
     cvv = StringField('Security Code', validators=[DataRequired(), check_cvv_number])
     submit = SubmitField('Pay')
 
