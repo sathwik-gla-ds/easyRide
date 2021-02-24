@@ -1,27 +1,30 @@
-{% extends "account_layout.html" %}
+<!-- User wallet balance and topup history table for users viewing in their account section -->
+
+{% extends "account_layout.html" %} <!-- Adds the SidebarMenu HTML code present in the account_layout.html file -->
 {% block account %}
 
 <div class="jumbotron">
   <h1> Wallet </h1>
   <ul>
-    <li> Balance: {{user.wallet_balance}} </li>
+    <li> Balance: {{user.wallet_balance}} </li> <!-- Current balance -->
   </ul>
   <a href="{{url_for('users.addbalance')}}" class="btn btn-primary" role="button">Add balance</a>
   </div>
   <div class="jumbotron">
     <h1> Top Up History </h1>
   </div>
+  <!-- Topup history table -->
   <div class="container">
     <div>
       <table class="table">
-        <thead>
+        <thead> <!-- Table Headings -->
           <tr>
             <th scope="col">Date</th>
             <th scope="col">Amount</th>
           </tr>
         </thead>
         <tbody>
-          {% for transaction in transactions.items %}
+          {% for transaction in transactions.items %} <!-- for each topup transaction details add them one by one to the rows  -->
           <tr>
             <th scope="row">{{transaction.time.strftime('%d-%m-%Y')}}</th>
             <td>{{transaction.amount}} GBP</td>

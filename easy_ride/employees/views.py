@@ -274,7 +274,7 @@ def manager_view():
         ratings = format_categories(ratings_raw, [1,2,3,4,5])
 
 #   Latest comments
-    comments = Review.query.filter(Review.review != "").limit(50).all()
+    comments = Review.query.filter(Review.review != "").order_by(Review.reviewed_at.desc()).limit(50).all()
 
 #   Pending repairs
     pending_repairs_raw = dict(Repair.query.filter_by(repair_status='NO').with_entities(Repair.urgency.name, db.func.count(Repair.id).label('count')).group_by(Repair.urgency).all())

@@ -14,18 +14,21 @@ class MoveBikeForm(FlaskForm):
             if not bike.status.name == 'YES':
                   raise ValidationError('Bike not available to move' )
 
-    bike_number = IntegerField('Bike Number', validators=[DataRequired(), bike_move_check], render_kw={'class':'form-control'})
-    new_location = SelectField('Moved location', validators=[DataRequired()], choices=['HILLHEAD', 'PARTICK', 'FINNIESTON', 'GOVAN', 'LAURIESTON'], render_kw={'class':'form-select'})
+    bike_number = IntegerField('Bike Number', validators=[DataRequired(), bike_move_check], render_kw={'class':'form-control', 'placeholder':' '})
+    new_location = SelectField('Moved location', validators=[DataRequired()], choices=['HILLHEAD', 'PARTICK', 'FINNIESTON', 'GOVAN', 'LAURIESTON'], render_kw={'class':'form-select', 'placeholder':' '})
     submit = SubmitField('Change Location', render_kw={'class':'btn btn-primary'})
 
 class RepairBikeForm(FlaskForm):
     def bike_repair_check(self, field):
         if not Repair.query.filter_by(bike_number=field.data, repair_status='NO').first():
             raise ValidationError('No bike reported with the given number')
+        else:
+            if BikeInfo.query.filter_by(bike_number=field.data).first().status.name not in ['YES', 'REPAIR']:
+                raise ValidationError('Bike currently not available')
 
-    bike_number = IntegerField('Bike Number', validators=[DataRequired(), bike_repair_check], render_kw={'class':'form-control'})
-    level_of_repair = SelectField('Level of repair', validators=[DataRequired()], choices=[0, 1, 2, 3, 4, 5], render_kw={'class':'form-select'})
-    comment = TextAreaField('Comment', validators=[DataRequired()], render_kw={'class':'form-control'})
+    bike_number = IntegerField('Bike Number', validators=[DataRequired(), bike_repair_check], render_kw={'class':'form-control', 'placeholder':' '})
+    level_of_repair = SelectField('Level of repair', validators=[DataRequired()], choices=[0, 1, 2, 3, 4, 5], render_kw={'class':'form-select', 'placeholder':' '})
+    comment = TextAreaField('Comment', validators=[DataRequired()], render_kw={'class':'form-control', 'placeholder':' '})
     submit = SubmitField('Complete Repair', render_kw={'class':'btn btn-primary'})
 
 class AddOperatorForm(FlaskForm):
@@ -37,11 +40,11 @@ class AddOperatorForm(FlaskForm):
         if User.query.filter_by(phone_number=field.data).first():
             raise ValidationError('This phone number has already been registered.')
 
-    first_name = StringField('First Name', validators=[DataRequired()], render_kw={'class':'form-control'})
-    last_name = StringField('Last Name', validators=[DataRequired()], render_kw={'class':'form-control'})
-    phone_number = IntegerField('Phone Number', validators=[DataRequired(), check_phone_reg], render_kw={'class':'form-control'})
-    email = StringField('Email', validators = [DataRequired(), Email(), check_email_reg], render_kw={'class':'form-control'})
-    password = PasswordField('Password', validators=[DataRequired(), EqualTo('confirm_password',message='passwords do not match!')], render_kw={'class':'form-control'})
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired()], render_kw={'class':'form-control'})
-    city = SelectField('City', choices=['GLASGOW'], validators=[DataRequired()], render_kw={'class':'form-select'})
+    first_name = StringField('First Name', validators=[DataRequired()], render_kw={'class':'form-control', 'placeholder':' '})
+    last_name = StringField('Last Name', validators=[DataRequired()], render_kw={'class':'form-control', 'placeholder':' '})
+    phone_number = IntegerField('Phone Number', validators=[DataRequired(), check_phone_reg], render_kw={'class':'form-control', 'placeholder':' '})
+    email = StringField('Email', validators = [DataRequired(), Email(), check_email_reg], render_kw={'class':'form-control', 'placeholder':' '})
+    password = PasswordField('Password', validators=[DataRequired(), EqualTo('confirm_password',message='passwords do not match!')], render_kw={'class':'form-control', 'placeholder':' '})
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired()], render_kw={'class':'form-control', 'placeholder':' '})
+    city = SelectField('City', choices=['GLASGOW'], validators=[DataRequired()], render_kw={'class':'form-select', 'placeholder':' '})
     submit = SubmitField('Add Operator', render_kw={'class':'btn btn-primary'})

@@ -1,4 +1,6 @@
-{% extends "account_layout.html" %}
+<!-- Form for reporting defective bikes -->
+
+{% extends "account_layout.html" %} <!-- Adds the SidebarMenu HTML code present in the account_layout.html file -->
 {% block account %}
 
 <div class="jumbotron">
@@ -7,9 +9,27 @@
 
 <form method="POST">
   {{form.hidden_tag()}}
-  {{form.bike_number.label}} {{form.bike_number}}<br>
-  {{form.description.label}} {{form.description}}<br>
-  {{form.urgency.label}} {{form.urgency}}<br>
+
+  <!-- Display Bike number and Urgency side by side -->
+  <div class="row">
+    <div class="col">
+      <div class="form-floating mb-3">
+        {{form.bike_number}}
+        {{form.bike_number.label}}
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-floating mb-3">
+        {{form.urgency}}
+        {{form.urgency.label}}
+      </div>
+    </div>
+  </div>
+  <!-- Form field for defect description -->
+  <div class="form-floating mb-3">
+    {{form.description}}
+    {{form.description.label}}
+  </div>
   {{form.submit}}
 </form>
 

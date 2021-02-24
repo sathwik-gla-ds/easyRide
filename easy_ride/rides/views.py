@@ -57,16 +57,12 @@ def placeback():
             amount = 1 + int(minutes*0.2)
             user = User.query.filter_by(id=current_user.id).first()
 
-            if (form.payment_type.data == "Credit Card") or (form.payment_type.data == "Wallet" and user.wallet_balance > amount):
+            if (form.payment_type.data == "CARD") or (form.payment_type.data == "WALLET" and user.wallet_balance > amount):
                 current_ride.end_ride(form.location.data)
                 bike.place_back(form.location.data)
-                if form.payment_type.data == "Credit Card":
-                    payment_type = 'CARD'
-                else:
-                    payment_type = 'WALLET'
 
                 transaction = Transaction(user_id = current_ride.user_id,
-                                           payment_type = payment_type,
+                                           payment_type = form.payment_type.data,
                                            amount = amount,
                                            ride_id = current_ride.ride_id,
                                            paid = 'NO')
@@ -74,7 +70,7 @@ def placeback():
                 if form.rating.data:
                     review = Review(current_ride.user_id, current_ride.ride_id, form.rating.data, form.review.data)
                     db.session.add(review)
-                db.session.add_all([current_ride, bike, transaction])
+                db.session.add_all([current_ride, bike, transaction, user])
                 db.session.commit()
 
                 return redirect(url_for('rides.payment'))

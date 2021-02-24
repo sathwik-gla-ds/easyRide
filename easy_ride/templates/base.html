@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+
+<!-- Contains Navbar code for all the webpages in this project. -->
+
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
@@ -17,6 +20,7 @@
     <!-- NavBar Code -->
       <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
+          <!-- Brand Title -->
           <a class="navbar-brand" href="{{url_for('core.index')}}">Easy Ride</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -24,6 +28,7 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item dropdown">
+                <!-- Dropdown for static info pages -->
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Information
                 </a>
@@ -39,20 +44,20 @@
               </li>
             </ul>
             <ul class="navbar-nav justify-content-end mb-2 mb-lg-0">
-              {% if current_user.is_authenticated %}
-                {% if current_user.user_type.name == 'NORMAL' %}
-                {% if current_user.session_var == 'RENTED' %}
+              {% if current_user.is_authenticated %} <!-- Navbar Options to display only if the user is authenticated -->
+                {% if current_user.user_type.name == 'NORMAL' %} <!-- Navbar Options to display only if the user is a normal user -->
+                {% if current_user.session_var == 'RENTED' %} <!-- Navbar Options to display if the user already rented a bike -->
                 <li class="nav-item">
                   <a class="nav-link" href="{{url_for('rides.booking')}}">Booking</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="{{url_for('rides.placeback')}}">Return</a>
                 </li>
-                {% elif current_user.session_var == 'PAYMENT' %}
+                {% elif current_user.session_var == 'PAYMENT' %} <!-- Navbar Options to display if the user returned the bike but has not finished payment -->
                 <li class="nav-item">
                   <a class="nav-link" href="{{url_for('rides.payment')}}">Payment</a>
                 </li>
-                {% else %}
+                {% else %} <!-- Navbar Options to display if the user has not rented a bike and has no unfinished payment -->
                 <li class="nav-item">
                   <a class="nav-link" href="{{url_for('rides.rent')}}">Rent</a>
                 </li>
@@ -75,26 +80,19 @@
                 </ul>
               </li>
 
-
-              <li class="nav-item">
-                <a class="nav-link" href="{{url_for('users.logout')}}">Logout</a>
-              </li>
-              {% elif current_user.user_type.name == 'OPERATOR' %}
+              {% elif current_user.user_type.name == 'OPERATOR' %} <!-- Navbar Options to display only if the user is a operator -->
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('employees.operator_view')}}">Operator's View</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{url_for('users.logout')}}">Logout</a>
-              </li>
-              {% else %}
+              {% else %} <!-- Navbar Options to display only if the user is a manager -->
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('employees.manager_view')}}">Manager's View</a>
               </li>
+              {% endif %}
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('users.logout')}}">Logout</a>
               </li>
-              {% endif %}
-              {% else %}
+              {% else %} <!-- Navbar Options to display only if the user is not logged in -->
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('users.login')}}">Login</a>
               </li>
@@ -107,8 +105,10 @@
         </div>
       </nav>
     <br>
+
+    <!-- In case if we ever flash a message for info or error, they will be added here -->
     <div class="container-sm">
-      {% with messages = get_flashed_messages() %}
+      {% with messages = get_flashed_messages() %} <!-- Every time a page loads it will check if there are any alert messages to be flashed -->
         {% if messages %}
           {% for message in messages %}
           <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -121,10 +121,12 @@
     </div>
     <br>
     <div class="container">
+
+    <!-- In case if we ever raise a validation error in the forms, they will be flashed here -->
     {%if form%}
     <div class="container-sm">
       {%for formname in form %}
-      {% with messages = formname.errors %}
+      {% with messages = formname.errors %} <!-- Every time a page loads it will check if there are any form errors to be flashed -->
         {% if messages %}
           {% for message in messages %}
           <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -137,6 +139,8 @@
       {%endfor%}
     </div>
     {%endif%}
+
+
       {% block content %}
 
       {% endblock %}

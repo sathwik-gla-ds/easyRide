@@ -3,6 +3,11 @@ from flask_login import current_user
 from functools import wraps
 from datetime import date, datetime, timedelta
 
+
+class Cnv2Obj:
+    def __init__(self, entries):
+        self.__dict__.update(entries)
+        
 def check_user_type(user_types):
     def decorator(function):
         @wraps(function)

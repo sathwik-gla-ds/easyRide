@@ -114,7 +114,16 @@ function bar_chart_config(xy_data, title_name, bar_type) {
 						display: true,
 						text: title_name,
             fontSize: 20
-					}
+					},
+			    scales: {
+								xAxes: [{
+									display: true,
+									ticks: {
+                    min: 0,
+										suggestedMax: 10
+                }
+								}]
+							}
 				}
 			}
       for (x of xy_data.data) {

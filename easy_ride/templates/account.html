@@ -1,49 +1,52 @@
-{% extends "account_layout.html" %}
+<!-- Profile page for the User, where he can also edit his person details if required -->
+
+{% extends "account_layout.html" %} <!-- Adds the SidebarMenu HTML code present in the account_layout.html file -->
 {% block account %}
   <div class="jumbotron">
     <div align='center'>
-      <h1>{{current_user.first_name.capitalize()}} {{current_user.last_name.capitalize()}}</h1>
+      <h1>{{current_user.first_name.capitalize()}} {{current_user.last_name.capitalize()}}</h1> <!-- Displays the name of the person on the top of the page -->
       <img class="img-fluid" width="128" height="128" align='center' src="{{url_for('static',filename='profile_pics/'+current_user.profile_image)}}">
     </div>
   </div>
 
   <div class="container">
-    <form method="POST" action="" enctype="multipart/form-data">
+    <form method="POST" action="" enctype="multipart/form-data"> <!-- Both displays the current values present in the database and also allows the user to change the values -->
         {{form.hidden_tag()}}
-      <div class="form-group">
-        {{form.first_name.label(class='form-group')}}
-        {{form.first_name(class='form-control')}}
-      </div>
+        <!-- Display First Name and Last Name side by side -->
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              {{form.first_name}}
+              {{form.first_name.label}}
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating mb-3">
+              {{form.last_name}}
+              {{form.last_name.label}}
+            </div>
+          </div>
+        </div>
 
-      <div class="form-group">
-        {{form.last_name.label(class='form-group')}}
-        {{form.last_name(class='form-control')}}
-      </div>
-
-      <div class="form-group">
-        {{form.phone_number.label(class='form-group')}}
-        {{form.phone_number(class='form-control')}}
-      </div>
-
-      <div class="form-group">
-        {{form.email.label(class='form-group')}}
-        {{form.email(class='form-control')}}
-      </div>
-
-      <div class="form-group">
-      {{form.city.label(class='form-group')}}
-      {{form.city(class='form-control')}}
-      </div>
+        <!-- Display phone number email and city form fields -->
+        <div class="form-floating mb-3">
+          {{form.phone_number}}
+          {{form.phone_number.label}}
+        </div>
+        <div class="form-floating mb-3">
+          {{form.email}}
+          {{form.email.label}}
+        </div>
+        <div class="form-floating mb-3">
+          {{form.city}}
+          {{form.city.label}}
+        </div>
+        {{form.submit}}
 
       <!-- <div class="form-group">
       {{form.picture.label(class='form-group')}}
       {{form.picture(class='form-control')}}
       </div> -->
-
-      <div class="form-group">
-       {{form.submit(class='btn btn-primary')}}
-      </div>
-
 
     </form>
   </div>

@@ -1,4 +1,6 @@
-{% extends "employee_layout.html" %}
+<!-- Operators dashboard -->
+
+{% extends "employee_layout.html" %} <!-- Adds the Navbar and SidebarMenu HTML code present in the employee_layout.html file -->
 {% block content %}
 
 <div class="jumbotron">
@@ -6,9 +8,9 @@
 </div>
 <br>
 <div class="container">
-  <h4> Bike Count </h4>
+  <h4> Bike Count </h4> <!-- Info related to how many bikes are present at each location -->
   <div class="row">
-    {% for location in locations %}
+    {% for location in locations %}  <!-- Add bike count information for each location one by one -->
     <div class="col-sm">
       <div class="card">
         <div class="card-body">
@@ -22,13 +24,13 @@
 </div>
 <br><br>
 <div class="container">
-  <h4> Stats </h4>
+  <h4> Stats </h4> <!-- Some basic info useful to the operators -->
   <div class="row">
     <div class="col-sm">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title text-center">{{rides}}</h5>
-          <h6 class="card-subtitle mb-2 text-muted text-center">On-going rides</h6>
+          <h6 class="card-subtitle mb-2 text-muted text-center">On-going rides</h6> <!-- Number of on-going rides -->
         </div>
       </div>
     </div>
@@ -37,7 +39,7 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title text-center">{{payments}}</h5>
-          <h6 class="card-subtitle mb-2 text-muted text-center">Pending payments</h6>
+          <h6 class="card-subtitle mb-2 text-muted text-center">Pending payments</h6> <!-- Number of on-pending payments -->
         </div>
       </div>
     </div>
@@ -46,7 +48,7 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title text-center">{{repairs}}</h5>
-          <h6 class="card-subtitle mb-2 text-muted text-center">Pending repairs</h6>
+          <h6 class="card-subtitle mb-2 text-muted text-center">Pending repairs</h6> <!-- Number of pending repairs -->
         </div>
       </div>
     </div>

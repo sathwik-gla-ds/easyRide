@@ -1,8 +1,11 @@
+<!-- Form for displaying booked bike info to the user -->
+
 {% extends "base.html" %}
 {% block content %}
 
 <div class="jumbotron">
   <h1> Booking Details</h1>
+  <!-- Displays bike number, bike pin, ride start time and the start location -->
   <ul>
     <li> Bike Number: {{bike.bike_number}} </li>
     <li> Bike Pin: {{bike.bike_pin}} </li>

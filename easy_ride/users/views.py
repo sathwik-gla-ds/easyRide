@@ -152,7 +152,7 @@ def userreviews():
 def reportbike():
     form = ReportBikeForm()
     if form.validate_on_submit():
-        repair = Repair(user_id = current_user.id, bike_number = form.bike_number.data, description = form.bike_number.data, urgency=form.urgency.data)
+        repair = Repair(user_id = current_user.id, bike_number = form.bike_number.data, description = form.description.data, urgency=form.urgency.data)
         bike = BikeInfo.query.filter_by(bike_number=form.bike_number.data).first()
         if not form.urgency.data == 'LOW':
             bike.status = 'REPAIR'

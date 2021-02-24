@@ -1,9 +1,15 @@
-{% extends "base.html" %}
+<!-- Form for renting a bike -->
+
+{% extends "base.html" %} <!-- Adds the navbar HTML code -->
 {% block content %}
 
+<!-- Form field for selecting the location for renting a bike -->
 <form method="POST">
   {{form.hidden_tag()}}
-  {{form.location.label}}{{form.location}}<br>
+  <div class="form-floating mb-3">
+    {{form.location}}
+    {{form.location.label}}
+  </div>
   {{form.submit()}}
 </form>
 

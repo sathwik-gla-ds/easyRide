@@ -1,22 +1,18 @@
-{% extends "base.html" %}
+<!-- Displays the form for loging in -->
+
+{% extends "base.html" %}  <!-- Displays the Navbar -->
 {% block content %}
 
   <form method="POST">
     {{form.hidden_tag()}}
     <div class="form-floating mb-3">
-      <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email" required>
-      <label for="email">{{form.email.label}}</label>
+      {{form.email}}
+      {{form.email.label}}
     </div>
     <div class="form-floating mb-3">
-      <input type="password" class="form-control" id="password" placeholder="name@example.com" name="password" required>
-      <label for="password">{{form.password.label}}</label>
+      {{form.password}}
+      {{form.password.label}}
     </div>
-    <input type="submit" value="Log In" class="btn btn-primary">
+    {{form.submit}}
   </form>
-  <!-- <form method="POST">
-    {{form.hidden_tag()}}
-    {{form.email.label}}{{form.email}}<br>
-    {{form.password.label}}{{form.password}}<br>
-    {{form.submit()}}
-  </form> -->
 {% endblock %}

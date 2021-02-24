@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+
+<!-- Contains Navbar and sidebarMenu HTML code for the operator and manager Account Views. -->
+
+
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
@@ -26,14 +30,14 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             </ul>
             <ul class="navbar-nav justify-content-end mb-2 mb-lg-0">
-              {% if current_user.user_type.name == 'OPERATOR' %}
+              {% if current_user.user_type.name == 'OPERATOR' %} <!-- Navbar options to show in case of a operator -->
               <li class="nav-item">
                 <a class="nav-link disabled" href="{{url_for('employees.operator_view')}}">Operator's View</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('users.logout')}}">Logout</a>
               </li>
-              {% else %}
+              {% else %}  <!-- Navbar options to show in case of a manager -->
               <li class="nav-item">
                 <a class="nav-link disabled" href="{{url_for('employees.manager_view')}}">Manager's View</a>
               </li>
@@ -46,13 +50,13 @@
         </div>
       </nav>
 
-
+      <!-- sidebarMenu Code -->
       <div class="container-fluid">
       <div class="row">
         <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
           <div class="position-sticky pt-3">
             <ul class="nav flex-column">
-                {% if current_user.user_type.name == 'OPERATOR' %}
+                {% if current_user.user_type.name == 'OPERATOR' %} <!-- sidebarMenu options to show in case of a operator -->
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('employees.operator_view')}}">Dashboard</a>
               </li>
@@ -72,7 +76,7 @@
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('employees.repair_bike')}}">Repair Bike</a>
               </li>
-              {% else %}
+              {% else %}  <!-- sidebarMenu options to show in case of a manager -->
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('employees.manager_view')}}">Dashboard</a>
               </li>
@@ -99,8 +103,9 @@
     <br>
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 
-    <div class="container-sm">
-      {% with messages = get_flashed_messages() %}
+  <!-- In case if we ever flash a message for info or error, they will be added here -->
+  <div class="container-sm">
+      {% with messages = get_flashed_messages() %} <!-- Every time a page loads it will check if there are any alert messages to be flashed -->
         {% if messages %}
           {% for message in messages %}
           <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -113,10 +118,12 @@
     </div>
     <br>
     <div class="container">
+
+    <!-- In case if we ever raise a validation error in the forms, they will be flashed here -->
     {%if form%}
     <div class="container-sm">
       {%for formname in form %}
-      {% with messages = formname.errors %}
+      {% with messages = formname.errors %} <!-- Every time a page loads it will check if there are any form errors to be flashed -->
         {% if messages %}
           {% for message in messages %}
           <div class="alert alert-warning alert-dismissible fade show" role="alert">

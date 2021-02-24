@@ -1,48 +1,54 @@
-{% extends "base.html" %}
+<!-- Form for new registrations -->
+
+{% extends "base.html" %} <!-- Adds the navbar HTML code -->
 {% block content %}
 
   <form method="POST">
     {{form.hidden_tag()}}
-    <div class="form-floating mb-3">
-      <input type="text" class="form-control" id="first_name" placeholder="John" name="first_name" required>
-      <label for="first_name">{{form.first_name.label}}</label>
+<!-- Display First Name and Last Name side by side -->
+    <div class="row">
+      <div class="col">
+        <div class="form-floating mb-3">
+          {{form.first_name}}
+          {{form.first_name.label}}
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-floating mb-3">
+          {{form.last_name}}
+          {{form.last_name.label}}
+        </div>
+      </div>
     </div>
-    <!-- {{form.first_name.label}}{{form.first_name}}<br> -->
+<!-- Display phone number email and city form fields -->
     <div class="form-floating mb-3">
-      <input type="text" class="form-control" id="last_name" placeholder="Doe" name="last_name" required>
-      <label for="last_name">{{form.last_name.label}}</label>
+      {{form.phone_number}}
+      {{form.phone_number.label}}
     </div>
-    <!-- {{form.last_name.label}}{{form.last_name}}<br> -->
     <div class="form-floating mb-3">
-      <input type="number" class="form-control" id="phone_number" placeholder="9876543210" name="phone_number" required>
-      <label for="phone_number">{{form.phone_number.label}}</label>
+      {{form.email}}
+      {{form.email.label}}
     </div>
-    <!-- {{form.phone_number.label}}{{form.phone_number}}<br> -->
+    <!-- Display password for fields side by side -->
+    <div class="row">
+      <div class="col">
+        <div class="form-floating mb-3">
+          {{form.password}}
+          {{form.password.label}}
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-floating mb-3">
+          {{form.confirm_password}}
+          {{form.confirm_password.label}}
+        </div>
+      </div>
+    </div>
     <div class="form-floating mb-3">
-      <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email" required>
-      <label for="email">{{form.email.label}}</label>
+      {{form.city}}
+      {{form.city.label}}
     </div>
-    <!-- {{form.email.label}}{{form.email}}<br> -->
-    <div class="form-floating mb-3">
-      <input type="password" class="form-control" id="password" placeholder="password" name="password" required>
-      <label for="password">{{form.password.label}}</label>
-    </div>
-    <!-- {{form.password.label}}{{form.password}}<br> -->
-    <div class="form-floating mb-3">
-      <input type="password" class="form-control" id="confirm_password" placeholder="password" name="confirm_password" required>
-      <label for="confirm_password">{{form.confirm_password.label}}</label>
-    </div>
-    <!-- {{form.confirm_password.label}}{{form.confirm_password}}<br> -->
-    <div class="form-floating mb-3">
-      <select class="form-select" id="city" name="city" required>
-        <option selected disabled value="">Select</option>
-        <option value="GLASGOW">Glasgow</option>
-      </select>
-      <label for="city">{{form.city.label}}</label>
-    </div>
+    {{form.submit}}
 
-    <!-- {{form.city.label}}{{form.city}}<br> -->
-    <input type="submit" value="Register" class="btn btn-primary">
-    <!-- {{form.submit()}} -->
   </form>
 {% endblock %}
