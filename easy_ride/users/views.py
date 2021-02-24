@@ -108,7 +108,7 @@ def account():
 def wallet():
     user = User.query.filter_by(id=current_user.id).first()
     page = request.args.get('page', 1, type=int)
-    topups = TopUp.query.filter_by(user_id=current_user.id).order_by(TopUp.time.desc()).paginate(page=page, per_page=10)
+    topups = TopUp.query.filter_by(user_id=current_user.id).order_by(TopUp.time.desc()).paginate(page=page, per_page=20)
     return render_template('wallet.html', user=user, transactions = topups)
 
 
@@ -134,7 +134,7 @@ def addbalance():
 @check_user_type('NORMAL')
 def userrides():
     page = request.args.get('page', 1, type=int)
-    transactions = Transaction.query.filter_by(user_id=current_user.id, paid='YES').order_by(Transaction.time.desc()).paginate(page=page, per_page=10)
+    transactions = Transaction.query.filter_by(user_id=current_user.id, paid='YES').order_by(Transaction.time.desc()).paginate(page=page, per_page=30)
     return render_template('userrides.html', transactions = transactions)
 
 
@@ -143,7 +143,7 @@ def userrides():
 @check_user_type('NORMAL')
 def userreviews():
     page = request.args.get('page', 1, type=int)
-    reviews = Review.query.filter_by(user_id=current_user.id).order_by(Review.reviewed_at.desc()).paginate(page=page, per_page=10)
+    reviews = Review.query.filter_by(user_id=current_user.id).order_by(Review.reviewed_at.desc()).paginate(page=page, per_page=30)
     return render_template('userreviews.html', reviews = reviews)
 
 @users.route('/reportbike',methods=['GET','POST'])
@@ -170,7 +170,7 @@ def user_info(user_id):
     page = [request.args.get('p1', 1, type=int), request.args.get('p2', 1, type=int), request.args.get('p3', 1, type=int), request.args.get('p4', 1, type=int)]
     user = User.query.filter_by(id=user_id).first_or_404()
     topups = TopUp.query.filter_by(user_id=user.id).order_by(TopUp.time.desc()).paginate(page=page[0], per_page=5)
-    transactions = Transaction.query.filter_by(user_id=user.id, paid='YES').order_by(Transaction.time.desc()).paginate(page=page[1], per_page=5)
-    reviews = Review.query.filter_by(user_id=user.id).order_by(Review.reviewed_at.desc()).paginate(page=page[2], per_page=5)
+    transactions = Transaction.query.filter_by(user_id=user.id, paid='YES').order_by(Transaction.time.desc()).paginate(page=page[1], per_page=10)
+    reviews = Review.query.filter_by(user_id=user.id).order_by(Review.reviewed_at.desc()).paginate(page=page[2], per_page=10)
     reports = Repair.query.filter_by(user_id=user.id).order_by(Repair.created_at.desc()).paginate(page=page[3], per_page=5)
     return render_template('user_info.html', user=user, topups=topups, transactions=transactions, reviews=reviews, reports=reports, p1=page[0], p2=page[1], p3=page[2], p4=page[3], user_type = current_user.user_type.name)

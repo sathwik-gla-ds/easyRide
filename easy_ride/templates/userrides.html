@@ -41,8 +41,10 @@
            {% for page_num in transactions.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
               {% if transactions.page == page_num %} <!-- Disable the current page number from being clicked  -->
               <li class="page-item disabled">
-                <a class="page-link" href="{{ url_for('users.userrides', page=page_num) }}">{{ page_num }}</a></li>
+                <a class="page-link" href="{{ url_for('users.userrides', page=page_num) }}">{{ page_num }}</a>
               </li>
+              {% elif not page_num %}
+              <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
               {% else %}
                 <li class="page-item"><a class="page-link" href="{{ url_for('users.userrides', page=page_num) }}">{{ page_num }}</a></li>
               {% endif %}

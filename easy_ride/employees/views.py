@@ -28,11 +28,11 @@ def check_rides():
     status = request.args.get('status', 'YES')
     page = request.args.get('page', 1, type=int)
     if status == 'YES':
-        rides = RideLog.query.filter_by(current = 'YES').order_by(RideLog.start_time.asc()).paginate(page=page, per_page=10)
+        rides = RideLog.query.filter_by(current = 'YES').order_by(RideLog.start_time.asc()).paginate(page=page, per_page=30)
     elif status == 'PENDING':
-        rides = Transaction.query.filter_by(paid = 'NO').order_by(Transaction.id.asc()).paginate(page=page, per_page=10)
+        rides = Transaction.query.filter_by(paid = 'NO').order_by(Transaction.id.asc()).paginate(page=page, per_page=30)
     else:
-        rides = RideLog.query.filter_by(current = 'NO').order_by(RideLog.start_time.desc()).paginate(page=page, per_page=10)
+        rides = RideLog.query.filter_by(current = 'NO').order_by(RideLog.start_time.desc()).paginate(page=page, per_page=30)
     return render_template('check_rides.html', rides=rides, status=status)
 
 
@@ -127,7 +127,7 @@ def operators():
 @check_user_type('MANAGER')
 def users():
     page = request.args.get('page', 1, type=int)
-    users = User.query.filter_by(user_type = 'NORMAL').paginate(page=page, per_page=20)
+    users = User.query.filter_by(user_type = 'NORMAL').paginate(page=page, per_page=30)
 
     return render_template('users.html', users=users)
 
