@@ -256,9 +256,9 @@ def manager_view():
         pay_type_card = []
         for pay in pay_type_raw:
             if pay[1] == 'CARD':
-                pay_type_raw_card.append((pay[0], pay[2]))
+                pay_type_card.append((pay[0], pay[2]))
             else:
-                pay_type_raw_wallet.append((pay[0], pay[2]))
+                pay_type_wallet.append((pay[0], pay[2]))
 
     # Wallet vs Card amount - radar (Get wallet vs card payed amount data required for the graph grouped by time and payment type)
     if filter_by_time == 'day':
@@ -295,9 +295,9 @@ def manager_view():
         pay_amount_card = []
         for pay in pay_amount_raw:
             if pay[1] == 'CARD':
-                pay_amount_raw_card.append((pay[0], pay[2]))
+                pay_amount_card.append((pay[0], pay[2]))
             else:
-                pay_amount_raw_wallet.append((pay[0], pay[2]))
+                pay_amount_wallet.append((pay[0], pay[2]))
 
     # Sales - line (Add up wallet and card payed amount data aquired above to get total sales required for the graph)
     total_sales = dict()
