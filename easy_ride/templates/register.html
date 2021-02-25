@@ -1,54 +1,51 @@
 <!-- Form for new registrations -->
-
 {% extends "base.html" %} <!-- Adds the navbar HTML code -->
 {% block content %}
-
-  <form method="POST">
+<form method="POST">
     {{form.hidden_tag()}}
-<!-- Display First Name and Last Name side by side -->
+    <!-- Display First Name and Last Name side by side -->
     <div class="row">
-      <div class="col">
-        <div class="form-floating mb-3">
-          {{form.first_name}}
-          {{form.first_name.label}}
+        <div class="col">
+            <div class="form-floating mb-3">
+                {{form.first_name}}
+                {{form.first_name.label}}
+            </div>
         </div>
-      </div>
-      <div class="col">
-        <div class="form-floating mb-3">
-          {{form.last_name}}
-          {{form.last_name.label}}
+        <div class="col">
+            <div class="form-floating mb-3">
+                {{form.last_name}}
+                {{form.last_name.label}}
+            </div>
         </div>
-      </div>
     </div>
-<!-- Display phone number email and city form fields -->
+    <!-- Display phone number email and city form fields -->
     <div class="form-floating mb-3">
-      {{form.phone_number}}
-      {{form.phone_number.label}}
+        {{form.phone_number}}
+        {{form.phone_number.label}}
     </div>
     <div class="form-floating mb-3">
-      {{form.email}}
-      {{form.email.label}}
+        {{form.email}}
+        {{form.email.label}}
     </div>
     <!-- Display password for fields side by side -->
     <div class="row">
-      <div class="col">
-        <div class="form-floating mb-3">
-          {{form.password}}
-          {{form.password.label}}
+        <div class="col">
+            <div class="form-floating mb-3">
+                {{form.password}}
+                {{form.password.label}}
+            </div>
         </div>
-      </div>
-      <div class="col">
-        <div class="form-floating mb-3">
-          {{form.confirm_password}}
-          {{form.confirm_password.label}}
+        <div class="col">
+            <div class="form-floating mb-3">
+                {{form.confirm_password}}
+                {{form.confirm_password.label}}
+            </div>
         </div>
-      </div>
     </div>
     <div class="form-floating mb-3">
-      {{form.city}}
-      {{form.city.label}}
+        {{form.city}}
+        {{form.city.label}}
     </div>
     {{form.submit}}
-
-  </form>
+</form>
 {% endblock %}
