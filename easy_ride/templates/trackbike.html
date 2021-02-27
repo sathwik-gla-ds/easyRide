@@ -1,0 +1,97 @@
+{% extends "employee_layout.html" %} <!-- Adds the Navbar and SidebarMenu HTML code present in the employee_layout.html file -->
+{% block content %}
+
+<div class="jumbotron">
+    <h3> Bike number: {{bike.bike_number}}</h3>
+</div>
+<br>
+<div class="container">
+    <h6> Bike information</h6>
+    <!-- Bike details -->
+    <ul>
+        <li> Bike pin: {{bike.bike_pin}} </li>
+        <li> Status: {{bike.status.name}} </li>
+        <li> Last Location: {{bike.last_location.name.capitalize()}} </li>
+    </ul>
+</div>
+<br>
+
+{% if bike.status.name == 'NO' %}
+<!-- Leaflet library for the map -->
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.4.0/dist/leaflet.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+<!-- Style attributes for the map -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.4.0/dist/leaflet.css"/>
+<style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+<style>#mapglasgow {
+   position: relative;
+   width: 70vw;
+   height: 50vh;
+   left: 0.0%;
+   top: 0.0%;
+   }
+   .border-2 {
+   border-width:2px !important;
+   }
+</style>
+<!-- Display the glassgow map with markers at each location -->
+<div class="container text-center">
+   <figure class="figure">
+      <div class="folium-map border border-secondary rounded border-2" id="mapglasgow" ></div>
+      <figcaption class="figure-caption text-end fw-light fst-italic"> Provided by © OpenStreetMap contributors </figcaption>
+   </figure>
+</div>
+<!-- glasgow_location_map script to display the map and add markers -->
+<script src='../static/js/glasgow_location_map.js'></script>
+
+<!-- Add bike count information for each location marker in the map -->
+<script>
+
+// Marker for bike current location
+var marker_bike = L.marker(
+    [{{coord[0]}}, {{coord[1]}}],
+    {
+        icon: new L.Icon.Default(),
+    }
+).addTo(mapglasgow);
+// Popup for bike current location
+var popup_bike = L.popup(
+{
+    maxWidth: '100%',
+    autoClose: false,
+    closeOnClick: false,
+    closeButton: false
+});
+var html_bike = $(`<div id="html_bike" style="width: 100.0%; height: 100.0%;">{{bike.bike_number}}</div>`)[0];
+popup_bike.setContent(html_bike);
+// Marker Binding for bike current location
+marker_bike.bindPopup(popup_bike)
+    .openPopup();
+// Onclick event for bike current location
+marker_bike.on('click', function getloc(e)
+{
+    marker_bike.openPopup();
+});
+
+// Remove all the other markers
+mapglasgow.removeLayer(marker_hillhead)
+mapglasgow.removeLayer(marker_partick)
+mapglasgow.removeLayer(marker_finnieston)
+mapglasgow.removeLayer(marker_govan)
+mapglasgow.removeLayer(marker_laurieston)
+
+</script>
+
+<br><br>
+
+{% endif %}
+
+
+
+
+
+
+
+
+{% endblock %}

@@ -7,7 +7,7 @@ from easy_ride.helpers import check_user_type, format_days, monthdelta, format_m
 from easy_ride.models import RideLog, BikeInfo, Repair, Transaction, User, LoginLog, Review
 from easy_ride.employees.forms import MoveBikeForm, RepairBikeForm, AddOperatorForm
 from datetime import date, timedelta
-
+import random
 
 employees = Blueprint('employees',__name__) # For registering the Blueprint/folder in main __init__.py file
 
@@ -17,8 +17,15 @@ employees = Blueprint('employees',__name__) # For registering the Blueprint/fold
 @login_required
 @check_user_type('OPERATOR') # Access only to operator and requires to be logged in
 def operator_view():
-    locations = BikeInfo.query.filter_by(status='YES').with_entities(BikeInfo.last_location, db.func.count(BikeInfo.last_location) \
-                                .label('count')).group_by(BikeInfo.last_location).all() # Get the available bike count grouped by locations
+    # locations = BikeInfo.query.filter_by(status='YES').with_entities(BikeInfo.last_location, db.func.count(BikeInfo.last_location) \
+    #                             .label('count')).group_by(BikeInfo.last_location).all() # Get the available bike count grouped by locations
+
+    avl_bikes_raw = dict(BikeInfo.query.filter_by(status='YES')\
+                            .with_entities(BikeInfo.last_location.name, db.func.count(BikeInfo.last_location).label('count'))\
+                                                    .group_by(BikeInfo.last_location).all()) # Get the available bike count grouped by locations
+    locations = format_categories(avl_bikes_raw, ['HILLHEAD', 'PARTICK', 'GOVAN', 'FINNIESTON', 'LAURIESTON'])
+
+
     rides = RideLog.query.filter_by(current = 'YES').count() # Get the current on going ride count
     payments = Transaction.query.filter_by(paid = 'NO').count() # Get teh pending payments count
     repairs = Repair.query.filter_by(repair_status = 'NO').count() # Get the pending reports count
@@ -357,3 +364,18 @@ def manager_view():
                             pending_repairs = {'data':pending_repairs},
                             completed_repairs = {'data':completed_repairs},
                             time=filter_by_time)
+
+
+# Track current bike
+@employees.route("/track/<int:bike_number>")
+@login_required
+@check_user_type(['OPERATOR', 'MANAGER']) # Access only to operator and manager and requires to be logged in
+def bike_track(bike_number):
+    bike = BikeInfo.query.filter_by(bike_number=bike_number).first_or_404() # Check if bike exists and get its details
+    if bike.status.name == 'NO': # Generate a random coordinate if the ride is going on to simulate GPS tracking
+        x_coord = random.uniform(55.84897611165679, 55.87462450307413)
+        y_coord = random.uniform(-4.257009723567907, -4.300081088690214)
+    else:
+        x_coord = 0
+        y_coord = 0
+    return render_template('trackbike.html', coord = [x_coord, y_coord], bike=bike)

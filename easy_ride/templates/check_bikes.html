@@ -57,7 +57,7 @@
             <tbody>
                 {% for bike in bikes.items %} <!-- for each bike details add them one by one to the rows  -->
                 <tr>
-                    <th scope="row">{{bike.bike_number}}</th>
+                    <th scope="row"><a href="{{ url_for('employees.bike_track', bike_number=bike.bike_number) }}">{{bike.bike_number}}</a></th>
                     <th>{{bike.bike_pin}}</th>
                     <td>{{bike.last_location.name.capitalize()}}</td>
                     <td>{{bike.status.name.capitalize()}}</td>

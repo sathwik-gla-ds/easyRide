@@ -1,13 +1,73 @@
 <!-- Form for renting a bike -->
 {% extends "base.html" %} <!-- Adds the navbar HTML code -->
 {% block content %}
+<!-- Leaflet library for the map -->
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.4.0/dist/leaflet.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+<!-- Style attributes for the map -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.4.0/dist/leaflet.css"/>
+<style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+<style>#mapglasgow {
+   position: relative;
+   width: 70vw;
+   height: 50vh;
+   left: 0.0%;
+   top: 0.0%;
+   }
+   .border-2 {
+   border-width:2px !important;
+   }
+</style>
+<!-- Display the glassgow map with markers at each location -->
+<div class="container text-center">
+   <figure class="figure">
+      <div class="folium-map border border-secondary rounded border-2" id="mapglasgow" ></div>
+      <figcaption class="figure-caption text-end fw-light fst-italic"> Provided by © OpenStreetMap contributors </figcaption>
+   </figure>
+</div>
+<!-- glasgow_location_map script to display the map and add markers -->
+<script src='static/js/glasgow_location_map.js'></script>
+<!-- change form value when a marker is clicked -->
+<script>
+// Onclick event for Hillhead
+marker_hillhead.on('click', function getloc(e)
+{
+    document.getElementById("location").value = "HILLHEAD";
+    marker_hillhead.openPopup();
+});
+// Onclick event for Partick
+marker_partick.on('click', function getloc(e)
+{
+    document.getElementById("location").value = "PARTICK";
+    marker_partick.openPopup();
+});
+// Onclick event for Finnieston
+marker_finnieston.on('click', function getloc(e)
+{
+    document.getElementById("location").value = "FINNIESTON";
+    marker_finnieston.openPopup();
+});
+// Onclick event for govan
+marker_govan.on('click', function getloc(e)
+{
+    document.getElementById("location").value = "GOVAN";
+    marker_govan.openPopup();
+});
+// Onclick event for Laurieston
+marker_laurieston.on('click', function getloc(e)
+{
+    document.getElementById("location").value = "LAURIESTON";
+    marker_laurieston.openPopup();
+});
+</script>
 <!-- Form field for selecting the location for renting a bike -->
 <form method="POST">
-    {{form.hidden_tag()}}
-    <div class="form-floating mb-3">
-        {{form.location}}
-        {{form.location.label}}
-    </div>
-    {{form.submit()}}
+   {{form.hidden_tag()}}
+   <div class="form-floating mb-3">
+      {{form.location}}
+      {{form.location.label}}
+   </div>
+   {{form.submit()}}
 </form>
 {% endblock %}

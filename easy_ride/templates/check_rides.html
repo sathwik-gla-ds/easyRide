@@ -48,7 +48,7 @@
                 {% if status=='PENDING' %}  <!-- Details to add in case on payment pending rides -->
                 <th scope="row">{{ride.ride.start_time.strftime('%d-%m-%Y')}}</th>
                 <th scope="row">{{ride.ride.start_time.strftime('%I:%M %p')}}</th>
-                <td>{{ride.ride.bike.bike_number}}</td>
+                <td><a href="{{ url_for('employees.bike_track', bike_number=ride.ride.bike.bike_number) }}">{{ride.ride.bike.bike_number}}</a></td>
                 <td>{{ride.ride.start_location.name.capitalize()}}</td>
                 <td><a href="{{ url_for('users.user_info', user_id=ride.user_id) }}">
                     {{ride.user.first_name.capitalize()}} {{ride.user.last_name.capitalize()}}</a>
@@ -59,13 +59,13 @@
                 {% else %} <!-- Details to add otherwise not payment pending -->
                 <th scope="row">{{ride.start_time.strftime('%d-%m-%Y')}}</th>
                 <th scope="row">{{ride.start_time.strftime('%I:%M %p')}}</th>
-                <td>{{ride.bike.bike_number}}</td>
+                <td><a href="{{ url_for('employees.bike_track', bike_number=ride.bike.bike_number) }}">{{ride.bike.bike_number}}</a></td>
                 <td>{{ride.start_location.name.capitalize()}}</td>
                 <td><a href="{{ url_for('users.user_info', user_id=ride.user_id) }}">
                     {{ride.user.first_name.capitalize()}} {{ride.user.last_name.capitalize()}}</a>
                 </td>
                 {% if status=='YES'%} <!-- Addition Details to add in case of on-going rides -->
-                <td></td>
+                <td><a href="{{ url_for('employees.bike_track', bike_number=ride.bike.bike_number) }}">Track</a></td>
                 {%else%} <!-- Addition Details to add in case of past rides -->
                 <td>{{ride.end_location.name.capitalize()}}</td>
                 <td>{{ride.get_minutes(ride.end_time)}} minutes</td>

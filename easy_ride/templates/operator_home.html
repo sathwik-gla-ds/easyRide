@@ -2,57 +2,79 @@
 {% extends "employee_layout.html" %} <!-- Adds the Navbar and SidebarMenu HTML code present in the employee_layout.html file -->
 {% block content %}
 <div class="jumbotron">
-    <h1> Operator Dashboard </h1>
+   <h1> Operator Dashboard </h1>
 </div>
 <br>
-<div class="container">
-    <h4> Bike Count </h4>
-    <!-- Info related to how many bikes are present at each location -->
-    <div class="row">
-        {% for location in locations %}  <!-- Add bike count information for each location one by one -->
-        <div class="col-sm">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title text-center">{{location.count}}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted text-center">{{location.last_location.name.capitalize()}}</h6>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
+<!-- Leaflet library for the map -->
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.4.0/dist/leaflet.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+<!-- Style attributes for the map -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.4.0/dist/leaflet.css"/>
+<style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+<style>#mapglasgow {
+   position: relative;
+   width: 70vw;
+   height: 50vh;
+   left: 0.0%;
+   top: 0.0%;
+   }
+   .border-2 {
+   border-width:2px !important;
+   }
+</style>
+<h4 class="text-center"> Bike Count </h4>
+<!-- Info related to how many bikes are present at each location -->
+<!-- Display the glassgow map with markers at each location -->
+<div class="container text-center">
+   <figure class="figure">
+      <div class="folium-map border border-secondary rounded border-2" id="mapglasgow" ></div>
+      <figcaption class="figure-caption text-end fw-light fst-italic"> Provided by © OpenStreetMap contributors </figcaption>
+   </figure>
 </div>
+<!-- glasgow_location_map script to display the map and add markers -->
+<script src='static/js/glasgow_location_map.js'></script>
+<!-- Add bike count information for each location marker in the map -->
+<script>
+   document.getElementById("html_hillhead").innerHTML = "{{locations[0][0].capitalize()}} - {{locations[0][1]}}";
+   document.getElementById("html_partick").innerHTML = "{{locations[1][0].capitalize()}} - {{locations[1][1]}}";
+   document.getElementById("html_finnieston").innerHTML = "{{locations[2][0].capitalize()}} - {{locations[2][1]}}";
+   document.getElementById("html_govan").innerHTML = "{{locations[3][0].capitalize()}} - {{locations[3][1]}}";
+   document.getElementById("html_laurieston").innerHTML = "{{locations[4][0].capitalize()}} - {{locations[4][1]}}";
+</script>
 <br><br>
 <div class="container">
-    <h4> Stats </h4>
-    <!-- Some basic info useful to the operators -->
-    <div class="row">
-        <div class="col-sm">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title text-center">{{rides}}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted text-center">On-going rides</h6>
-                    <!-- Number of on-going rides -->
-                </div>
+   <h4 class="text-center"> Stats </h4>
+   <!-- Some basic info useful to the operators -->
+   <div class="row">
+      <div class="col-sm">
+         <div class="card">
+            <div class="card-body">
+               <h5 class="card-title text-center">{{rides}}</h5>
+               <h6 class="card-subtitle mb-2 text-muted text-center">On-going rides</h6>
+               <!-- Number of on-going rides -->
             </div>
-        </div>
-        <div class="col-sm">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title text-center">{{payments}}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted text-center">Pending payments</h6>
-                    <!-- Number of on-pending payments -->
-                </div>
+         </div>
+      </div>
+      <div class="col-sm">
+         <div class="card">
+            <div class="card-body">
+               <h5 class="card-title text-center">{{payments}}</h5>
+               <h6 class="card-subtitle mb-2 text-muted text-center">Pending payments</h6>
+               <!-- Number of on-pending payments -->
             </div>
-        </div>
-        <div class="col-sm">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title text-center">{{repairs}}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted text-center">Pending repairs</h6>
-                    <!-- Number of pending repairs -->
-                </div>
+         </div>
+      </div>
+      <div class="col-sm">
+         <div class="card">
+            <div class="card-body">
+               <h5 class="card-title text-center">{{repairs}}</h5>
+               <h6 class="card-subtitle mb-2 text-muted text-center">Pending repairs</h6>
+               <!-- Number of pending repairs -->
             </div>
-        </div>
-    </div>
+         </div>
+      </div>
+   </div>
 </div>
+<br><br>
 {% endblock %}
