@@ -19,13 +19,13 @@ def check_user_type(user_types):
             if current_user.user_type.name in user_types:
                 return function(*args, **kwargs)
             elif current_user.user_type.name == 'OPERATOR':
-                flash('Access Denied')
+                flash('Access Denied', 'danger')
                 return redirect(url_for('employees.operator_view'))
             elif current_user.user_type.name == 'MANAGER':
-                flash('Access Denied')
+                flash('Access Denied', 'danger')
                 return redirect(url_for('employees.manager_view'))
             else:
-                flash('Access Denied')
+                flash('Access Denied', 'danger')
                 return redirect(url_for('core.index'))
             return function(*args, **kwargs)
         return wrapper

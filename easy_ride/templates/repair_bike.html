@@ -1,81 +1,83 @@
 <!-- For for repairing a bike and displays the table of bikes to be repaired available only to the operators -->
 {% extends "employee_layout.html" %}  <!-- Adds the Navbar and SidebarMenu HTML code present in the employee_layout.html file -->
 {% block content %}
-<div class="jumbotron">
+  <div class="jumbotron">
     <h1> Repair Bike </h1>
-</div>
-<!-- Form for repairing the bike -->
-<form method="POST">
-    {{form.hidden_tag()}}
+  </div>
+  <!-- Form for repairing the bike -->
+  <form method="POST">
+    {{ form.hidden_tag() }}
     <!-- Display Bike number and Level of repair side by side -->
     <div class="row">
-        <div class="col">
-            <div class="form-floating mb-3">
-                {{form.bike_number}}
-                {{form.bike_number.label}}
-            </div>
+      <div class="col">
+        <div class="form-floating mb-3">
+          {{ form.bike_number }}
+          {{ form.bike_number.label }}
         </div>
-        <div class="col">
-            <div class="form-floating mb-3">
-                {{form.level_of_repair}}
-                {{form.level_of_repair.label}}
-            </div>
+      </div>
+      <div class="col">
+        <div class="form-floating mb-3">
+          {{ form.level_of_repair }}
+          {{ form.level_of_repair.label }}
         </div>
+      </div>
     </div>
     <!-- Form field for any comments from the operator -->
     <div class="form-floating mb-3">
-        {{form.comment}}
-        {{form.comment.label}}
+      {{ form.comment }}
+      {{ form.comment.label }}
     </div>
-    {{form.submit}}
-</form>
-<br>
-<!-- Pending Repairs Table -->
-<div class="jumbotron">
+    {{ form.submit }}
+  </form>
+  <br>
+  <!-- Pending Repairs Table -->
+  <div class="jumbotron">
     <h2> Repairs </h2>
-</div>
-<div class="container">
+  </div>
+  <div class="container">
     <div>
-        <table class="table">
-            <thead>
-                <!-- Table Headings -->
-                <tr>
-                    <th scope="col">Date</th>
-                    <th scope="col">Bike Number</th>
-                    <th scope="col">Urgency</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">User</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for repair in repairs.items %} <!-- for each pending repair details add them one by one to the rows  -->
-                <tr>
-                    <td scope="row">{{repair.created_at.strftime('%d-%m-%Y')}}</td>
-                    <td>{{repair.bike_number}}</td>
-                    <td>{{repair.urgency.name}}</td>
-                    <td>{{repair.description}}</td>
-                    <td><a href="{{ url_for('users.user_info', user_id=repair.user_id) }}">
-                        {{repair.user.first_name.capitalize()}} {{repair.user.last_name.capitalize()}}</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <nav aria-label="Page navigation example">
-            <!-- Adds pagination to control the amount of information in the table  -->
-            <ul class="pagination justify-content-center">
-            {% for page_num in repairs.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+      <table class="table">
+        <thead>
+        <!-- Table Headings -->
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Bike Number</th>
+          <th scope="col">Urgency</th>
+          <th scope="col">Description</th>
+          <th scope="col">User</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for repair in repairs.items %} <!-- for each pending repair details add them one by one to the rows  -->
+          <tr>
+            <td scope="row">{{ repair.created_at.strftime('%d-%m-%Y') }}</td>
+            <td>{{ repair.bike_number }}</td>
+            <td>{{ repair.urgency.name }}</td>
+            <td>{{ repair.description }}</td>
+            <td><a href="{{ url_for('users.user_info', user_id=repair.user_id) }}">
+              {{ repair.user.first_name.capitalize() }} {{ repair.user.last_name.capitalize() }}</a>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      <nav aria-label="Page navigation example">
+        <!-- Adds pagination to control the amount of information in the table  -->
+        <ul class="pagination justify-content-center">
+          {% for page_num in repairs.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
             {% if repairs.page == page_num %} <!-- Disable the current page number from being clicked  -->
-            <li class="page-item disabled">
+              <li class="page-item disabled">
                 <a class="page-link" href="{{ url_for('employees.repair_bike', page=page_num) }}">{{ page_num }}</a>
-            </li>
+              </li>
             {% elif not page_num %}
-            <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+              <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
             {% else %}
-            <li class="page-item"><a class="page-link" href="{{ url_for('employees.repair_bike', page=page_num) }}">{{ page_num }}</a></li>
+              <li class="page-item"><a class="page-link"
+                                       href="{{ url_for('employees.repair_bike', page=page_num) }}">{{ page_num }}</a>
+              </li>
             {% endif %}
-            {% endfor %}
-        </nav>
+          {% endfor %}
+      </nav>
     </div>
-</div>
+  </div>
 {% endblock %}

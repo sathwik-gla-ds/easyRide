@@ -1,58 +1,58 @@
 <!-- Form for adding balance to his wallet -->
 {% extends "account_layout.html" %} <!-- Adds the SidebarMenu HTML code present in the account_layout.html file -->
 {% block account %}
-<div class="jumbotron">
+  <div class="jumbotron">
     <h1> Add Wallet Balance </h1>
-    <p> Current Balance: {{user.wallet_balance}}</p>
+    <p> Current Balance: {{ user.wallet_balance }}</p>
     <!-- Current wallet balace of the user -->
-</div>
-<!-- Form for adding balance to the wallet with fields of amount to be added and card details -->
-<form method="POST">
-    {{form.hidden_tag()}}
+  </div>
+  <!-- Form for adding balance to the wallet with fields of amount to be added and card details -->
+  <form method="POST">
+    {{ form.hidden_tag() }}
     <div class="form-floating input-group mb-3">
-        {{form.amount}}
-        <span class="input-group-text">.00</span>
-        <span class="input-group-text">£</span>
-        {{form.amount.label}}
+      {{ form.amount }}
+      <span class="input-group-text">.00</span>
+      <span class="input-group-text">£</span>
+      {{ form.amount.label }}
     </div>
     <h6 class="text-uppercase">Payment details</h6>
     <br>
     <!-- Display Name and Card number side by side -->
     <div class="row">
-        <div class="col">
-            <div class="form-floating mb-3">
-                {{form.name}}
-                {{form.name.label}}
-            </div>
+      <div class="col">
+        <div class="form-floating mb-3">
+          {{ form.name }}
+          {{ form.name.label }}
         </div>
-        <div class="col">
-            <div class="form-floating mb-3">
-                {{form.card}}
-                {{form.card.label}}
-            </div>
+      </div>
+      <div class="col">
+        <div class="form-floating mb-3">
+          {{ form.card }}
+          {{ form.card.label }}
         </div>
+      </div>
     </div>
     <!-- Display month, year and security code side by side -->
     <div class="row">
-        <div class="col">
-            <div class="form-floating mb-3">
-                {{form.month}}
-                {{form.month.label}}
-            </div>
+      <div class="col">
+        <div class="form-floating mb-3">
+          {{ form.month }}
+          {{ form.month.label }}
         </div>
-        <div class="col">
-            <div class="form-floating mb-3">
-                {{form.year}}
-                {{form.year.label}}
-            </div>
+      </div>
+      <div class="col">
+        <div class="form-floating mb-3">
+          {{ form.year }}
+          {{ form.year.label }}
         </div>
-        <div class="col">
-            <div class="form-floating mb-3">
-                {{form.cvv}}
-                {{form.cvv.label}}
-            </div>
+      </div>
+      <div class="col">
+        <div class="form-floating mb-3">
+          {{ form.cvv }}
+          {{ form.cvv.label }}
         </div>
+      </div>
     </div>
-    {{form.submit}}
-</form>
+    {{ form.submit }}
+  </form>
 {% endblock %}

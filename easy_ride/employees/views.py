@@ -90,7 +90,7 @@ def repair_bike():
         bike.status = 'YES'
         db.session.add_all([repair, bike]) #Add and commit the changes to the database
         db.session.commit()
-        flash('Repair success!') # Flash a success message
+        flash('Repair success!', 'success') # Flash a success message
         return redirect(url_for('employees.check_bikes', bike_num=bike.bike_number)) # Redirect to the bikes pages after filling in the form
 
     return render_template('repair_bike.html', form=form, repairs=repairs) # Page to use/render when user visits the route
@@ -109,7 +109,7 @@ def move_bike():
         bike.place_back(form.new_location.data)
         db.session.add(bike) #Add and commit the changes to the database
         db.session.commit()
-        flash('Move success!') # Flash a success message
+        flash('Move success!', 'success') # Flash a success message
         return redirect(url_for('employees.check_bikes', bike_num=bike.bike_number)) # Redirect to the bikes pages after filling in the form
 
     return render_template('move_bike.html', form=form) # Page to use/render when user visits the route
@@ -136,7 +136,7 @@ def operators():
 
         db.session.add(user) #Add and commit the changes to the database
         db.session.commit()
-        flash('Operator successfully registered!') # Flash a success message
+        flash('Operator successfully registered!', 'success') # Flash a success message
         return redirect(url_for('employees.operators')) # Reload the same page with updated talbe after filling in the form
 
     return render_template('operators.html', form=form, operators=operators) # Page to use/render when user visits the route
