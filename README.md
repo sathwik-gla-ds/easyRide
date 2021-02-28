@@ -5,35 +5,58 @@
  **Heroku app deployed domain** : easyridelab02.herokuapp.com  
 
 ### Login information for testing
-**User** 
+**User**
 >Register as a new user  
 
-**Operator** 
+**Operator**
 >**email** : o1@easyride.live  
 **password** : 12345666
 
 >Can also register a new operator from manager dashboard
 
-**Manager** 
+**Manager**
 >**email** : manager@easyride.live  
 **password** : 12345666
 
 ### Database information
-**username** = admin
-**password** = lab02g2c
-**endpoint** = group-project-psd.clsvl0h7k6t3.eu-west-2.rds.amazonaws.com:3306
-**database** = easy_ride
+**username** = admin  
+**password** = lab02g2c  
+**endpoint** = group-project-psd.clsvl0h7k6t3.eu-west-2.rds.amazonaws.com:3306  
+**database** = easy_ride  
 
 >Hosted at AWS RDS
+
+### For local deployment
+
+1. Open the command line terminal at the main project folder  
+2. Install the required libraries mentioned in the requirements.txt file  
+```bash 
+pip install -r requirements.txt  
+```
+3. If migrations folder is not available, then initialize the flask db
+```bash 
+flask db init  
+```
+4. If any new changes were made to the models.py file, then migrate the changes  
+```bash 
+flask db migrate -m "changes made"
+flask db upgrade
+```
+5. Start the app by running the app.py file  
+```bash 
+python app.py
+```
+6. Visit 127.0.0.1:5000 where the app is deployed  
+
 
 ## Some cool project stats
 
 | Type | Lines | Chars | Files | Percent | Comments |
 | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
-| **Python** | 1780 | 111901 | 23 | 52.3 | 506 |
-| **HTML** | 1919 | 88811 | 32 | 41.5 | 239 |
-| **CSS** | 84 | 1696 | 1 | 0.8 | 8 |
-| **JavaScript** | 411 | 11544 | 2 | 5.4 | 56 |
+| Python | 1780 | 111901 | 23 | 52.3 | 506 |
+| HTML | 1919 | 88811 | 32 | 41.5 | 239 |
+| CSS | 84 | 1696 | 1 | 0.8 | 8 |
+| JavaScript | 411 | 11544 | 2 | 5.4 | 56 |
 | **Total** | **4194** | **213952** | **58** | **100** | **809** |
 
 
