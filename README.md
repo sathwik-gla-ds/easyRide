@@ -1,14 +1,14 @@
 ## App deatils
 ### Hosting details
- **Hosted platform** : Heroku  
- **Main Domain Name** : www.easyride.live
- **Heroku app deployed domain** : easyridelab02.herokuapp.com
+ ** Hosted platform ** : Heroku  
+ ** Main Domain Name ** : www.easyride.live  
+ ** Heroku app deployed domain ** : easyridelab02.herokuapp.com  
 
 ### Login information for testing
-> User 
-**Hosted platform** : Heroku
-**Main Domain Name** : www.easyride.live
-**Heroku app deployed domain** : easyridelab02.herokuapp.com
+> User  
+** Hosted platform ** : Heroku  
+** Main Domain Name ** : www.easyride.live  
+** Heroku app deployed domain ** : easyridelab02.herokuapp.com  
 
 
 
@@ -16,15 +16,16 @@
 
 | Type | Lines | Chars | Files | Percent | Comments |
 | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
-| **Python** | 1780 | 111901 | 23 | 52.3 | 506 |
-| **HTML** | 1919 | 88811 | 32 | 41.5 | 239 |
-| **CSS** | 84 | 1696 | 1 | 0.8 | 8 |
-| **JavaScript** | 411 | 11544 | 2 | 5.4 | 56 |
-| **Total** | **4194** | **213952** | **58** | **100** | **809** |
+| Python | 1780 | 111901 | 23 | 52.3 | 506 |
+| HTML | 1919 | 88811 | 32 | 41.51 | 239 |
+| CSS | 84 | 1696 | 1 | 0.79 | 8 |
+| JavaScript | 411 | 11544 | 2 | 5.4 | 56 |
+| ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
+| Total | 4194 | 213952 | 58 | 100 | 809 |
 
 
 ## Directory Structure:
-  
+
 ```
 EasyRide
 |   app.py (File which launches the flask application)
