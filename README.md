@@ -1,6 +1,6 @@
 ## App deatils
 ### Hosting details
- **Hosted platform** : Heroku \n
+ **Hosted platform** : Heroku  
  **Main Domain Name** : www.easyride.live
  **Heroku app deployed domain** : easyridelab02.herokuapp.com
 
