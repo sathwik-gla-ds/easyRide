@@ -25,7 +25,7 @@ class LoginForm(FlaskForm):
     # Fields in form to fill
     email = StringField('Email', validators = [DataRequired(), Email()], render_kw={'class':'form-control', 'placeholder':' '})
     password = PasswordField('Password', validators=[DataRequired()], render_kw={'class':'form-control', 'placeholder':' '})
-    submit = SubmitField('Log In', render_kw={'class':'btn btn-outline-primary'})
+    submit = SubmitField('Log In', render_kw={'class':'btn btn-lg btn-primary btn-block'})
 
 # Form to fill in information used by the normal users to register
 class RegistrationForm(FlaskForm):
@@ -43,12 +43,12 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Your password should be 8 characters or longer!')
 
     # Fields in form to fill
-    first_name = StringField('First Name', validators=[DataRequired()], render_kw={'class':'form-control', 'placeholder':' '})
+    first_name = StringField('First Name', validators=[DataRequired()], render_kw={'class':'form-control', 'placeholder':' ', 'required':' '})
     last_name = StringField('Last Name', validators=[DataRequired()], render_kw={'class':'form-control', 'placeholder':' '})
     phone_number = IntegerField('Phone Number', validators=[DataRequired(), check_phone_reg], render_kw={'class':'form-control', 'placeholder':' '})
-    email = StringField('Email', validators = [DataRequired(), Email(), check_email_reg], render_kw={'class':'form-control', 'placeholder':' '})
-    password = PasswordField('Password', validators=[DataRequired(), EqualTo('confirm_password',message='passwords do not match!'), check_password_reg], render_kw={'class':'form-control', 'placeholder':' '})
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired()], render_kw={'class':'form-control', 'placeholder':' '})
+    email = StringField('Email', validators = [DataRequired(), Email(), check_email_reg], render_kw={'class':'form-control', 'placeholder':' ','required':' ','type':'email'})
+    password = PasswordField('Password', validators=[DataRequired(), EqualTo('confirm_password',message='passwords do not match!'), check_password_reg], render_kw={'class':'form-control', 'placeholder':' ','required':' '})
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired()], render_kw={'class':'form-control', 'placeholder':' ','required':' '})
     city = SelectField('City', choices=[('GLASGOW', 'Glasgow')], validators=[DataRequired()], render_kw={'class':'form-select', 'placeholder':' '})
     submit = SubmitField('Register', render_kw={'class':'btn btn-outline-success'})
 

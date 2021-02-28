@@ -12,7 +12,7 @@
         <!-- Bootstrap Bundle with Popper -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
         <!-- NavBar Code -->
-        <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
             <div class="container-fluid">
                 <!-- Brand Title -->
                 <a class="navbar-brand" href="{{url_for('core.index')}}">Easy Ride</a>
@@ -116,7 +116,7 @@
             {% with messages = get_flashed_messages() %} <!-- Every time a page loads it will check if there are any alert messages to be flashed -->
             {% if messages %}
             {% for message in messages %}
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ message }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
@@ -146,5 +146,13 @@
             {% block content %}
             {% endblock %}
         </div>
+        <div>
+            <footer class="pt-4 my-md-5 pt-md-5 border-top">
+              <div class="row">
+                <div class="col-12 col-md">
+                  <p class="mt-5 mb-3 text-muted text-center">&copy; University of Glasgow CS - Group 2C - EasyRide 2021</p>
+                </div>
+            </footer>
+          </div>
     </body>
 </html>
