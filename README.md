@@ -1,27 +1,40 @@
-## App deatils
+## App details
 ### Hosting details
- ** Hosted platform ** : Heroku  
- ** Main Domain Name ** : www.easyride.live  
- ** Heroku app deployed domain ** : easyridelab02.herokuapp.com  
+ **Hosted platform** : Heroku  
+ **Main Domain Name** : www.easyride.live  
+ **Heroku app deployed domain** : easyridelab02.herokuapp.com  
 
 ### Login information for testing
-> User  
-** Hosted platform ** : Heroku  
-** Main Domain Name ** : www.easyride.live  
-** Heroku app deployed domain ** : easyridelab02.herokuapp.com  
+**User** 
+>Register as a new user  
 
+**Operator** 
+>**email** : o1@easyride.live  
+**password** : 12345666
 
+>Can also register a new operator from manager dashboard
+
+**Manager** 
+>**email** : manager@easyride.live  
+**password** : 12345666
+
+### Database information
+**username** = admin
+**password** = lab02g2c
+**endpoint** = group-project-psd.clsvl0h7k6t3.eu-west-2.rds.amazonaws.com:3306
+**database** = easy_ride
+
+>Hosted at AWS RDS
 
 ## Some cool project stats
 
 | Type | Lines | Chars | Files | Percent | Comments |
 | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
-| Python | 1780 | 111901 | 23 | 52.3 | 506 |
-| HTML | 1919 | 88811 | 32 | 41.51 | 239 |
-| CSS | 84 | 1696 | 1 | 0.79 | 8 |
-| JavaScript | 411 | 11544 | 2 | 5.4 | 56 |
-| ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
-| Total | 4194 | 213952 | 58 | 100 | 809 |
+| **Python** | 1780 | 111901 | 23 | 52.3 | 506 |
+| **HTML** | 1919 | 88811 | 32 | 41.5 | 239 |
+| **CSS** | 84 | 1696 | 1 | 0.8 | 8 |
+| **JavaScript** | 411 | 11544 | 2 | 5.4 | 56 |
+| **Total** | **4194** | **213952** | **58** | **100** | **809** |
 
 
 ## Directory Structure:
