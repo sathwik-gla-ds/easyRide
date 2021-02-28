@@ -38,20 +38,20 @@ pip install -r requirements.txt
 flask db init  
 ```
 4. If any new changes were made to the models.py file, then migrate the changes  
-```bash 
+```bash
 pip install -r requirements.txt  
 ```
 3. If migrations folder is not available, then initialize the flask db
-```bash 
+```bash
 flask db init  
 ```
 4. If any new changes were made to the models.py file, then migrate the changes  
-```bash 
+```bash
 flask db migrate -m "changes made"
 flask db upgrade
 ```
 5. Start the app by running the app.py file  
-```bash 
+```bash
 python app.py
 ```
 6. Visit 127.0.0.1:5000 where the app is deployed  
@@ -61,11 +61,11 @@ python app.py
 
 | Type | Lines | Chars | Files | Percent | Comments |
 | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
-| Python | 1780 | 111901 | 23 | 52.3 | 506 |
-| HTML | 1919 | 88811 | 32 | 41.5 | 239 |
-| CSS | 84 | 1696 | 1 | 0.8 | 8 |
+| Python | 1793 | 112814 | 23 | 52.3 | 506 |
+| HTML | 2142 | 87823 | 32 | 40.1 | 244 |
+| CSS | 160 | 3249 | 2 | 1.5 | 11 |
 | JavaScript | 411 | 11544 | 2 | 5.4 | 56 |
-| **Total** | **4194** | **213952** | **58** | **100** | **809** |
+| **Total** | **4506** | **215430** | **59** | **100** | **817** |
 
 
 ## Directory Structure:

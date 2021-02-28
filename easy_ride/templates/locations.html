@@ -1,10 +1,53 @@
 {% extends "base.html" %}
 {% block content %}
   <div class="jumbotron">
-    <h1> Locations </h1>
-    <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-      magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <h1 class="display-4"> Available Locations </h1>
+    <!-- Leaflet library for the map -->
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.4.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <!-- Style attributes for the map -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.4.0/dist/leaflet.css"/>
+    <style>#map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+    }</style>
+    <style>#mapglasgow {
+      position: relative;
+      width: 70vw;
+      height: 50vh;
+      left: 0.0%;
+      top: 0.0%;
+    }
+
+    .border-2 {
+      border-width: 2px !important;
+    }
+    </style>
+    <!-- Display the glassgow map with markers at each location -->
+    <div class="container text-center">
+      <figure class="figure">
+        <div class="folium-map border border-secondary rounded border-2" id="mapglasgow"></div>
+        <figcaption class="figure-caption text-end fw-light fst-italic"> Provided by © OpenStreetMap contributors
+        </figcaption>
+      </figure>
+    </div>
+    <!-- glasgow_location_map script to display the map and add markers -->
+    <script src='static/js/glasgow_location_map.js'></script>
+
+
+    <ol>
+      <li> Hillhead </li>
+      <li> Partick </li>
+      <li> Finnieston </li>
+      <li> Govan </li>
+      <li> Laurieston </li>
+    </ol>
+
+<p class="lead">More locations coming soon! Stay tuned.</p>
   </div>
 {% endblock %}

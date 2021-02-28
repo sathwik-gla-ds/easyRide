@@ -4,9 +4,13 @@
       <h1> Easy Ride </h1>
   </div> -->
   <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-    <h1 class="display-4">What is SmartRide</h1>
+    <h1 class="display-4">What is SmartRide?</h1>
     <p class="lead">Consumers can easily use bicycles in the city through this system, and bills can be settled through
       smart payment. Managers can easily view the operating status of the system and manage all bicycles in the
       city.</p>
+    {% if not current_user.is_authenticated %}
+      <a href="{{ url_for('users.login') }}" class="btn btn-primary" role="button">Login</a>
+      <a href="{{ url_for('users.register') }}" class="btn btn-success" role="button">Register</a>
+    {% endif %}
   </div>
 {% endblock %}
