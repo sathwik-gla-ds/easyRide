@@ -1,101 +1,103 @@
 <!-- Contains the form for adding new operators and displays all the operators available only to the manager -->
 {% extends "employee_layout.html" %}  <!-- Adds the Navbar and SidebarMenu HTML code present in the employee_layout.html file -->
 {% block content %}
-<div class="jumbotron">
+  <div class="jumbotron">
     <h1> Add Operators </h1>
-</div>
-<!-- Form for adding new operator -->
-<div class="container">
+  </div>
+  <!-- Form for adding new operator -->
+  <div class="container">
     <form method="POST">
-        {{form.hidden_tag()}}
-        <!-- Display First Name and Last Name side by side -->
-        <div class="row">
-            <div class="col">
-                <div class="form-floating mb-3">
-                    {{form.first_name}}
-                    {{form.first_name.label}}
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-floating mb-3">
-                    {{form.last_name}}
-                    {{form.last_name.label}}
-                </div>
-            </div>
+      {{ form.hidden_tag() }}
+      <!-- Display First Name and Last Name side by side -->
+      <div class="row">
+        <div class="col">
+          <div class="form-floating mb-3">
+            {{ form.first_name }}
+            {{ form.first_name.label }}
+          </div>
         </div>
-        <!-- Display phone number email and city form fields -->
-        <div class="form-floating mb-3">
-            {{form.phone_number}}
-            {{form.phone_number.label}}
+        <div class="col">
+          <div class="form-floating mb-3">
+            {{ form.last_name }}
+            {{ form.last_name.label }}
+          </div>
         </div>
-        <div class="form-floating mb-3">
-            {{form.email}}
-            {{form.email.label}}
+      </div>
+      <!-- Display phone number email and city form fields -->
+      <div class="form-floating mb-3">
+        {{ form.phone_number }}
+        {{ form.phone_number.label }}
+      </div>
+      <div class="form-floating mb-3">
+        {{ form.email }}
+        {{ form.email.label }}
+      </div>
+      <!-- Display password fields side by side -->
+      <div class="row">
+        <div class="col">
+          <div class="form-floating mb-3">
+            {{ form.password }}
+            {{ form.password.label }}
+          </div>
         </div>
-        <!-- Display password fields side by side -->
-        <div class="row">
-            <div class="col">
-                <div class="form-floating mb-3">
-                    {{form.password}}
-                    {{form.password.label}}
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-floating mb-3">
-                    {{form.confirm_password}}
-                    {{form.confirm_password.label}}
-                </div>
-            </div>
+        <div class="col">
+          <div class="form-floating mb-3">
+            {{ form.confirm_password }}
+            {{ form.confirm_password.label }}
+          </div>
         </div>
-        <div class="form-floating mb-3">
-            {{form.city}}
-            {{form.city.label}}
-        </div>
-        {{form.submit}}
+      </div>
+      <div class="form-floating mb-3">
+        {{ form.city }}
+        {{ form.city.label }}
+      </div>
+      {{ form.submit }}
     </form>
-</div>
-<div class="jumbotron">
+  </div>
+  <div class="jumbotron">
     <h2> Operators </h2>
-</div>
-<!-- Table to list all the operators -->
-<div class="container">
+  </div>
+  <!-- Table to list all the operators -->
+  <div class="container">
     <div>
-        <table class="table">
-            <thead>
-                <!-- Table Headings -->
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Phone Number</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">City</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for operator in operators.items %} <!-- for each operator details add them one by one to the rows  -->
-                <tr>
-                    <td>{{operator.first_name.capitalize()}} {{operator.last_name.capitalize()}}</td>
-                    <td>{{operator.phone_number}}</td>
-                    <td>{{operator.email}}</td>
-                    <td>{{operator.city}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <nav aria-label="Page navigation example">
-            <!-- Adds pagination to control the amount of information in the table  -->
-            <ul class="pagination justify-content-center">
-            {% for page_num in operators.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+      <table class="table">
+        <thead>
+        <!-- Table Headings -->
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Phone Number</th>
+          <th scope="col">Email</th>
+          <th scope="col">City</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for operator in operators.items %} <!-- for each operator details add them one by one to the rows  -->
+          <tr>
+            <td>{{ operator.first_name.capitalize() }} {{ operator.last_name.capitalize() }}</td>
+            <td>{{ operator.phone_number }}</td>
+            <td>{{ operator.email }}</td>
+            <td>{{ operator.city }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      <nav aria-label="Page navigation example">
+        <!-- Adds pagination to control the amount of information in the table  -->
+        <ul class="pagination justify-content-center">
+          {% for page_num in operators.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
             {% if operators.page == page_num %} <!-- Disable the current page number from being clicked  -->
-            <li class="page-item disabled">
+              <li class="page-item disabled">
                 <a class="page-link" href="{{ url_for('employees.operators', page=page_num) }}">{{ page_num }}</a>
-            </li>
+              </li>
             {% elif not page_num %}
-            <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+              <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
             {% else %}
-            <li class="page-item"><a class="page-link" href="{{ url_for('employees.operators', page=page_num) }}">{{ page_num }}</a></li>
+              <li class="page-item"><a class="page-link"
+                                       href="{{ url_for('employees.operators', page=page_num) }}">{{ page_num }}</a>
+              </li>
             {% endif %}
-            {% endfor %}
-        </nav>
+          {% endfor %}
+      </nav>
     </div>
-</div>
+  </div>
 {% endblock %}

@@ -1,61 +1,61 @@
 <!-- Form for returning the bike -->
 {% extends "base.html" %} <!-- Adds the navbar HTML code -->
 {% block content %}
-<form method="POST">
-    {{form.hidden_tag()}}
+  <form method="POST">
+    {{ form.hidden_tag() }}
     <!-- Form field for return location -->
     <div class="form-floating mb-3">
-        {{form.location}}
-        {{form.location.label}}
+      {{ form.location }}
+      {{ form.location.label }}
     </div>
     <!-- Styled radio button type Form field for selecting to pay with either wallet or card -->
     <div class="row">
-        <div class="col-1">
-            <h5><small class="text-muted"> Pay with: </small></h5>
-        </div>
-        <div class="col">
-            <input type="radio" class="btn-check" name="payment_type" id="wallet_button" autocomplete="off" value="WALLET">
-            <label class="btn btn-outline-secondary" for="wallet_button">Wallet</label>
-            <input type="radio" class="btn-check" name="payment_type" id="card_button" autocomplete="off" value="CARD">
-            <label class="btn btn-outline-secondary" for="card_button">Credit Card</label>
-        </div>
+      <div class="col-1">
+        <h5><small class="text-muted"> Pay with: </small></h5>
+      </div>
+      <div class="col">
+        <input type="radio" class="btn-check" name="payment_type" id="wallet_button" autocomplete="off" value="WALLET">
+        <label class="btn btn-outline-secondary" for="wallet_button">Wallet</label>
+        <input type="radio" class="btn-check" name="payment_type" id="card_button" autocomplete="off" value="CARD">
+        <label class="btn btn-outline-secondary" for="card_button">Credit Card</label>
+      </div>
     </div>
     <br>
     <!-- Styled radio option type Form field for selecting the rating for the ride -->
     <div class="row">
-        <div class="col-1">
-            <h5><small class="text-muted"> Rating: </small></h5>
+      <div class="col-1">
+        <h5><small class="text-muted"> Rating: </small></h5>
+      </div>
+      <div class="col">
+        <!-- Options for rating -->
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="rating" id="inlineRadio5" value=5 checked>
+          <label class="form-check-label" for="inlineRadio5">5</label>
         </div>
-        <div class="col">
-            <!-- Options for rating -->
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="rating" id="inlineRadio5" value=5 checked>
-                <label class="form-check-label" for="inlineRadio5">5</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="rating" id="inlineRadio4" value=4>
-                <label class="form-check-label" for="inlineRadio4">4</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="rating" id="inlineRadio3" value=3>
-                <label class="form-check-label" for="inlineRadio3">3</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="rating" id="inlineRadio2" value=2>
-                <label class="form-check-label" for="inlineRadio2">2</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="rating" id="inlineRadio1" value=1>
-                <label class="form-check-label" for="inlineRadio1">1</label>
-            </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="rating" id="inlineRadio4" value=4>
+          <label class="form-check-label" for="inlineRadio4">4</label>
         </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="rating" id="inlineRadio3" value=3>
+          <label class="form-check-label" for="inlineRadio3">3</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="rating" id="inlineRadio2" value=2>
+          <label class="form-check-label" for="inlineRadio2">2</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="rating" id="inlineRadio1" value=1>
+          <label class="form-check-label" for="inlineRadio1">1</label>
+        </div>
+      </div>
     </div>
     <br>
     <!-- Form field for writing a review -->
     <div class="form-floating mb-3">
-        {{form.review}}
-        {{form.review.label}}
+      {{ form.review }}
+      {{ form.review.label }}
     </div>
-    {{form.submit()}}
-</form>
+    {{ form.submit() }}
+  </form>
 {% endblock %}

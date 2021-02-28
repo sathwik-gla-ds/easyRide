@@ -13,9 +13,9 @@ app.config['SECRET_KEY'] = 'mysecret'
 #===============================================================#
 # MySQL Database Config settings. Database is hosted in AWS RDS #
 #===============================================================#
-username = 'admin'
-password = 'lab02g2c'
-endpoint = 'group-project-psd.clsvl0h7k6t3.eu-west-2.rds.amazonaws.com:3306'
+username = 'hd'
+password = 'easy_ridehd1503'
+endpoint = '182.92.235.32:3306'
 database = 'easy_ride'
 # config settings required for SQLAlchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{username}:{password}@{endpoint}/{database}"

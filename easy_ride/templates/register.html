@@ -2,89 +2,89 @@
 {% extends "base.html" %}
 <!-- Adds the navbar HTML code -->
 {% block content %}
-<form method="POST" novalidate class="needs-validation">
-  {{form.hidden_tag()}}
-  <!-- Display First Name and Last Name side by side -->
-  <div class="row">
-    <div class="col">
-      <div class="form-floating mb-3">
-        {{form.first_name}} {{form.first_name.label}}
-        <div class="invalid-feedback">
+  <form method="POST" novalidate class="needs-validation">
+    {{ form.hidden_tag() }}
+    <!-- Display First Name and Last Name side by side -->
+    <div class="row">
+      <div class="col">
+        <div class="form-floating mb-3">
+          {{ form.first_name }} {{ form.first_name.label }}
+          <div class="invalid-feedback">
             Valid first name is required.
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col">
-      <div class="form-floating mb-3">
-        {{form.last_name}} {{form.last_name.label}}
-        <div class="invalid-feedback">
+      <div class="col">
+        <div class="form-floating mb-3">
+          {{ form.last_name }} {{ form.last_name.label }}
+          <div class="invalid-feedback">
             Valid last name is required.
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <!-- Display phone number email and city form fields -->
-  <div class="form-floating mb-3">
-    {{form.phone_number}} {{form.phone_number.label}}
-    <div class="invalid-feedback">
+    <!-- Display phone number email and city form fields -->
+    <div class="form-floating mb-3">
+      {{ form.phone_number }} {{ form.phone_number.label }}
+      <div class="invalid-feedback">
         Valid Phone Number is required.
+      </div>
     </div>
-  </div>
-  <div class="form-floating mb-3">{{form.email}} {{form.email.label}}
-    <div class="invalid-feedback">
+    <div class="form-floating mb-3">{{ form.email }} {{ form.email.label }}
+      <div class="invalid-feedback">
         Valid Email is required.
+      </div>
     </div>
-  </div>
-  <!-- Display password for fields side by side -->
-  <div class="row">
-    <div class="col">
-      <div class="form-floating mb-3">
-        {{form.password}} {{form.password.label}}
-        <div class="invalid-feedback">
+    <!-- Display password for fields side by side -->
+    <div class="row">
+      <div class="col">
+        <div class="form-floating mb-3">
+          {{ form.password }} {{ form.password.label }}
+          <div class="invalid-feedback">
             Valid password is required.
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-floating mb-3">
+          {{ form.confirm_password }} {{ form.confirm_password.label }}
+          <div class="invalid-feedback">
+            Valid password is required.
+          </div>
         </div>
       </div>
     </div>
-    <div class="col">
-      <div class="form-floating mb-3">
-        {{form.confirm_password}} {{form.confirm_password.label}}
-        <div class="invalid-feedback">
-            Valid password is required.
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="form-floating mb-3">{{form.city}} {{form.city.label}}</div>
-  {{form.submit}}
-</form>
-<script>
-  (function () {
-    "use strict";
+    <div class="form-floating mb-3">{{ form.city }} {{ form.city.label }}</div>
+    {{ form.submit }}
+  </form>
+  <script>
+    (function () {
+      "use strict";
 
-    window.addEventListener(
-      "load",
-      function () {
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = document.getElementsByClassName("needs-validation");
+      window.addEventListener(
+        "load",
+        function () {
+          // Fetch all the forms we want to apply custom Bootstrap validation styles to
+          var forms = document.getElementsByClassName("needs-validation");
 
-        // Loop over them and prevent submission
-        Array.prototype.filter.call(forms, function (form) {
-          form.addEventListener(
-            "submit",
-            function (event) {
-              if (form.checkValidity() === false) {
-                event.preventDefault();
-                event.stopPropagation();
-              }
+          // Loop over them and prevent submission
+          Array.prototype.filter.call(forms, function (form) {
+            form.addEventListener(
+              "submit",
+              function (event) {
+                if (form.checkValidity() === false) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                }
 
-              form.classList.add("was-validated");
-            },
-            false
-          );
-        });
-      },
-      false
-    );
-  })();
-</script>
+                form.classList.add("was-validated");
+              },
+              false
+            );
+          });
+        },
+        false
+      );
+    })();
+  </script>
 {% endblock %}

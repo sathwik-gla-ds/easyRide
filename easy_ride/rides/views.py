@@ -37,14 +37,14 @@ def rent():
                     db.session.commit()
                     return redirect(url_for('rides.booking')) # Redirect to the booking the page after user submits the form
                 else:
-                    flash("Sorry, but no bikes are available currently at the location you choose!")
+                    flash("Sorry, but no bikes are available currently at the location you choose!", "warning")
 
             return render_template('rent.html', form=form) # Loads the rent page if there are no pending payments or on-going rides
         else: # Redirect to payments page if there are pending payments
-            flash("Please return the previous bike before you book another")
+            flash("Please return the previous bike before you book another", "warning")
             return redirect(url_for('rides.placeback'))
     else: # Redirect to payments page if there are any on going
-        flash("Please pay for the previous ride before you book another")
+        flash("Please pay for the previous ride before you book another", "warning")
         return redirect(url_for('rides.payment'))
 
 
@@ -80,7 +80,7 @@ def placeback():
 
                 return redirect(url_for('rides.payment')) # Redirect to payment page after ending the ride
             else: # Ask user to choose to pay with card if there is not enough balance in the wallet
-                flash('Not enough balance in the wallet! Please choose credit card instead.')
+                flash('Not enough balance in the wallet! Please choose credit card instead.', 'warning')
         return render_template('placeback.html', form = form)
     else: # Redirect to rent page if user has no ongoing rides
         return redirect(url_for('rides.rent'))
@@ -119,7 +119,7 @@ def payment():
             if form.validate_on_submit(): # Logic to perform when the form is filled
                 today = datetime.today()
                 if form.year.data == '2021' and int(form.month.data)<today.month: # Check if the expiry date is valid
-                    flash('The expiry date cannot be before today')
+                    flash('The expiry date cannot be before today', 'warning')
                 else:
                     transaction.update_payment(form.card.data) # Update the transaction
                     current_user.session_var = ''
@@ -128,5 +128,5 @@ def payment():
                     return redirect(url_for('users.userrides'))
             return render_template('payment.html', form = form, transaction = transaction, ride = ride, time = ride.get_minutes(ride.end_time))
     else: # If there are no pending payments redirect to the rent page instead
-        flash('No pending payments')
+        flash('No pending payments', 'info')
         return redirect(url_for('rides.rent'))

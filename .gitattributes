@@ -1,7 +1,0 @@
-# Things to ignore when adding to git
-# Auto detect text files and perform LF normalization
-* text=auto
-
-# Byte-compiled python cache files
-__pycache__/
-*.py[cod]

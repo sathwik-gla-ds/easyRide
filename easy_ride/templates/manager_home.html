@@ -1,161 +1,172 @@
 <!-- Managers dashboard with all the graphs -->
 {% extends "employee_layout.html" %} <!-- Adds the Navbar and SidebarMenu HTML code present in the employee_layout.html file -->
 {% block content %}
-<!-- Adding Chart.js CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
-<script src='static/js/chart_config.js'></script> <!-- Custom js file for getting the chart configs -->
-<div class="jumbotron">
+  <!-- Adding Chart.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+  <script src='static/js/chart_config.js'></script> <!-- Custom js file for getting the chart configs -->
+  <div class="jumbotron">
     <h1> Manager Dashboard </h1>
-</div>
-<hr class="solid">
-<!-- Divider -->
-<ul class="nav nav-pills nav-fill">
+  </div>
+  <hr class="solid">
+  <!-- Divider -->
+  <ul class="nav nav-pills nav-fill">
     <!-- Options for setting the time periods of the charts -- >
         {% if time=='day'%} <!-- Option to show as activated if selected to view the last week logs -->
-    <li class="nav-item"><a class="nav-link active" href="{{url_for('employees.manager_view', time='day')}}">Last 7 days</a></li>
-    <li class="nav-item"><a class="nav-link" href="{{url_for('employees.manager_view', time='month')}}">Last 6 months</a></li>
-    <li class="nav-item"><a class="nav-link" href="{{url_for('employees.manager_view', time='year')}}">All time</a></li>
+      <li class="nav-item"><a class="nav-link active" href="{{ url_for('employees.manager_view', time='day') }}">Last 7
+        days</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ url_for('employees.manager_view', time='month') }}">Last 6
+        months</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ url_for('employees.manager_view', time='year') }}">All time</a>
+      </li>
     {% elif time=='month' %} <!-- Option to show as activated if selected to view the last 6 month logs -->
-    <li class="nav-item"><a class="nav-link" href="{{url_for('employees.manager_view', time='day')}}">Last 7 days</a></li>
-    <li class="nav-item"><a class="nav-link active" href="{{url_for('employees.manager_view', time='month')}}">Last 6 months</a></li>
-    <li class="nav-item"><a class="nav-link" href="{{url_for('employees.manager_view', time='year')}}">All time</a></li>
-    {%else%} <!-- Option to show as activated if selected to view the all time logs -->
-    <li class="nav-item"><a class="nav-link" href="{{url_for('employees.manager_view', time='day')}}">Last 7 days</a></li>
-    <li class="nav-item"><a class="nav-link" href="{{url_for('employees.manager_view', time='month')}}">Last 6 months</a></li>
-    <li class="nav-item"><a class="nav-link active" href="{{url_for('employees.manager_view', time='year')}}">All time</a></li>
-    {%endif%}
-</ul>
-<hr class="solid">
-<br>
-<div class="container">
+      <li class="nav-item"><a class="nav-link" href="{{ url_for('employees.manager_view', time='day') }}">Last 7
+        days</a></li>
+      <li class="nav-item"><a class="nav-link active" href="{{ url_for('employees.manager_view', time='month') }}">Last
+        6 months</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ url_for('employees.manager_view', time='year') }}">All time</a>
+      </li>
+    {% else %} <!-- Option to show as activated if selected to view the all time logs -->
+      <li class="nav-item"><a class="nav-link" href="{{ url_for('employees.manager_view', time='day') }}">Last 7
+        days</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ url_for('employees.manager_view', time='month') }}">Last 6
+        months</a></li>
+      <li class="nav-item"><a class="nav-link active" href="{{ url_for('employees.manager_view', time='year') }}">All
+        time</a></li>
+    {% endif %}
+  </ul>
+  <hr class="solid">
+  <br>
+  <div class="container">
     <h4> Payments </h4>
     <br> <!-- Charts related to payments -->
     <div class="row">
-        <div class="col-sm">
-            <canvas id="sales" width="6" height="3"></canvas>
-            <!-- Chart for total sales -->
-        </div>
+      <div class="col-sm">
+        <canvas id="sales" width="6" height="3"></canvas>
+        <!-- Chart for total sales -->
+      </div>
     </div>
     <div class="row">
-        <div class="col-sm">
-            <canvas id="walletvscardtimes" width="4" height="3"></canvas>
-            <!-- Chart for comparing how many times users used wallet vs credit card to pay -->
-        </div>
-        <div class="col-sm">
-            <canvas id="walletvscardamount" width="4" height="3"></canvas>
-            <!-- Chart for comparing how much amount users paid wallet vs credit card -->
-        </div>
+      <div class="col-sm">
+        <canvas id="walletvscardtimes" width="4" height="3"></canvas>
+        <!-- Chart for comparing how many times users used wallet vs credit card to pay -->
+      </div>
+      <div class="col-sm">
+        <canvas id="walletvscardamount" width="4" height="3"></canvas>
+        <!-- Chart for comparing how much amount users paid wallet vs credit card -->
+      </div>
     </div>
-</div>
-<!-- <hr class="dashed"> <hr class="solid"> <hr class="dotted"> -->
-<br><br>
-<hr class="solid">
-<br>
-<div class="container">
+  </div>
+  <!-- <hr class="dashed"> <hr class="solid"> <hr class="dotted"> -->
+  <br><br>
+  <hr class="solid">
+  <br>
+  <div class="container">
     <h4> Rides </h4>
     <br> <!-- Charts related to rides -->
     <div class="row">
-        <div class="col-sm-8">
-            <canvas id="totalrides" width="4" height="3"></canvas>
-            <!-- Chart for total number of rides -->
+      <div class="col-sm-8">
+        <canvas id="totalrides" width="4" height="3"></canvas>
+        <!-- Chart for total number of rides -->
+      </div>
+      <div class="col-sm-4">
+        <div class="row">
+          <div class="col-sm">
+            <canvas id="availablebikes" width="4" height="3"></canvas>
+            <!-- Chart for number of available bikes currently in each of the locations -->
+          </div>
         </div>
-        <div class="col-sm-4">
-            <div class="row">
-                <div class="col-sm">
-                    <canvas id="availablebikes" width="4" height="3"></canvas>
-                    <!-- Chart for number of available bikes currently in each of the locations -->
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm">
-                    <canvas id="popularlocations" width="4" height="3"></canvas>
-                    <!-- Chart for most popular locations where users usually rents a bike -->
-                </div>
-            </div>
+        <div class="row">
+          <div class="col-sm">
+            <canvas id="popularlocations" width="4" height="3"></canvas>
+            <!-- Chart for most popular locations where users usually rents a bike -->
+          </div>
         </div>
+      </div>
     </div>
-</div>
-<br><br>
-<hr class="solid">
-<br>
-<div class="container">
+  </div>
+  <br><br>
+  <hr class="solid">
+  <br>
+  <div class="container">
     <h4> Users </h4>
     <br> <!-- Charts related to users -->
     <div class="row">
-        <div class="col-sm">
-            <canvas id="newusers" width="4" height="3"></canvas>
-            <!-- Chart for new user registrations -->
-        </div>
-        <div class="col-sm">
-            <canvas id="logins" width="4" height="3"></canvas>
-            <!-- Chart for active users -->
-        </div>
+      <div class="col-sm">
+        <canvas id="newusers" width="4" height="3"></canvas>
+        <!-- Chart for new user registrations -->
+      </div>
+      <div class="col-sm">
+        <canvas id="logins" width="4" height="3"></canvas>
+        <!-- Chart for active users -->
+      </div>
     </div>
-</div>
-<br><br>
-<hr class="solid">
-<br>
-<div class="container">
+  </div>
+  <br><br>
+  <hr class="solid">
+  <br>
+  <div class="container">
     <h4> Ratings </h4>
     <br> <!-- Charts related to ratings -->
     <div class="row">
-        <div class="col-sm-4">
-            <canvas id="ratings" width="4" height="3"></canvas>
-            <!-- Chart for ratings -->
-        </div>
-        <div class="col-sm-8">
-            <h5>Latest comments</h5>
-            <!-- Display latest 50 comments -->
-            <div class="ratio ratio-21x9">
-                <div class="overflow-auto">
-                    {% for comment in comments %} <!-- Add each comment one by one in a row -->
-                    <div class="card" >
-                        <div class="card-body">
-                            <h6>{{ comment.review }}</h6>
-                            <!-- comment -->
-                            <div class="row">
-                                <div class="col-sm">
-                                    <p class="card-text"> Rating: {{ comment.rating }}</p>
-                                    <!-- rating given -->
-                                </div>
-                                <div class="col-sm">
-                                    <!-- user -->
-                                    <p>By: <a href="{{ url_for('users.user_info', user_id=comment.user_id) }}">{{comment.user.first_name.capitalize()}} {{comment.user.last_name.capitalize()}}</a></p>
-                                </div>
-                                <div class="col-sm">
-                                    <!-- date -->
-                                    <p>Reviewed on: {{ comment.reviewed_at.strftime('%Y-%m-%d') }}</p>
-                                </div>
-                            </div>
-                        </div>
+      <div class="col-sm-4">
+        <canvas id="ratings" width="4" height="3"></canvas>
+        <!-- Chart for ratings -->
+      </div>
+      <div class="col-sm-8">
+        <h5>Latest comments</h5>
+        <!-- Display latest 50 comments -->
+        <div class="ratio ratio-21x9">
+          <div class="overflow-auto">
+            {% for comment in comments %} <!-- Add each comment one by one in a row -->
+              <div class="card">
+                <div class="card-body">
+                  <h6>{{ comment.review }}</h6>
+                  <!-- comment -->
+                  <div class="row">
+                    <div class="col-sm">
+                      <p class="card-text"> Rating: {{ comment.rating }}</p>
+                      <!-- rating given -->
                     </div>
-                    {% endfor %}
+                    <div class="col-sm">
+                      <!-- user -->
+                      <p>By: <a
+                          href="{{ url_for('users.user_info', user_id=comment.user_id) }}">{{ comment.user.first_name.capitalize() }} {{ comment.user.last_name.capitalize() }}</a>
+                      </p>
+                    </div>
+                    <div class="col-sm">
+                      <!-- date -->
+                      <p>Reviewed on: {{ comment.reviewed_at.strftime('%Y-%m-%d') }}</p>
+                    </div>
+                  </div>
                 </div>
-            </div>
+              </div>
+            {% endfor %}
+          </div>
         </div>
+      </div>
     </div>
-</div>
-<br><br>
-<hr class="solid">
-<br>
-<div class="container">
+  </div>
+  <br><br>
+  <hr class="solid">
+  <br>
+  <div class="container">
     <h4> Repairs </h4>
     <br>  <!-- Charts related to ratings and comments -->
     <div class="row">
-        <div class="col-sm">
-            <canvas id="pendingrepairs" width="4" height="3"></canvas>
-            <!-- Chart for pending repairs -->
-        </div>
-        <div class="col-sm">
-            <canvas id="completedrepairs" width="4" height="3"></canvas>
-            <!-- Chart for completed repairs -->
-        </div>
+      <div class="col-sm">
+        <canvas id="pendingrepairs" width="4" height="3"></canvas>
+        <!-- Chart for pending repairs -->
+      </div>
+      <div class="col-sm">
+        <canvas id="completedrepairs" width="4" height="3"></canvas>
+        <!-- Chart for completed repairs -->
+      </div>
     </div>
-</div>
-<br><br>
-<hr class="solid">
-<br>
-<script>
+  </div>
+  <br><br>
+  <hr class="solid">
+  <br>
+  <script>
     // Getting the chart configs and displaying them at the above respective canvas elements
     // Configs for user charts
     new Chart(document.getElementById("newusers").getContext("2d"), bar_chart_config({{new_reg|tojson}}, 'New Users', 'bar'))
@@ -166,12 +177,12 @@
     new Chart(document.getElementById("popularlocations").getContext("2d"), pie_chart_config({{pop_loc|tojson}}, 'Locations popularity', 'pie', 'half'))
     // Configs for sales charts
     new Chart(document.getElementById("sales").getContext("2d"), line_chart_config({{total_sales|tojson}}, 'Total Sales', 'date', 'amount', false))
-    new Chart(document.getElementById("walletvscardtimes").getContext("2d"), radar_chart_config([{{pay_type_wallet|tojson}}, {{pay_type_card|tojson}}], ['wallet','card'], 'Wallet vs Card Times'))
-    new Chart(document.getElementById("walletvscardamount").getContext("2d"), radar_chart_config([{{pay_amount_wallet|tojson}}, {{pay_amount_card|tojson}}], ['wallet','card'], 'Wallet vs Card Amount'))
+    new Chart(document.getElementById("walletvscardtimes").getContext("2d"), radar_chart_config([{{pay_type_wallet|tojson}}, {{pay_type_card|tojson}}], ['wallet', 'card'], 'Wallet vs Card Times'))
+    new Chart(document.getElementById("walletvscardamount").getContext("2d"), radar_chart_config([{{pay_amount_wallet|tojson}}, {{pay_amount_card|tojson}}], ['wallet', 'card'], 'Wallet vs Card Amount'))
     // Configs for ratings charts
     new Chart(document.getElementById("ratings").getContext("2d"), pie_chart_config({{ratings|tojson}}, 'Ratings', 'pie', 'full'))
     // Configs for repair charts
     new Chart(document.getElementById("pendingrepairs").getContext("2d"), bar_chart_config({{pending_repairs|tojson}}, 'Pending repairs', 'horizontalBar'))
     new Chart(document.getElementById("completedrepairs").getContext("2d"), bar_chart_config({{completed_repairs|tojson}}, 'Completed repairs', 'horizontalBar'))
-</script>
+  </script>
 {% endblock %}
