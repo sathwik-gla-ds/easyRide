@@ -30,7 +30,6 @@
 
 1. Open the command line terminal at the main project folder  
 2. Install the required libraries mentioned in the requirements.txt file  
-<<<<<<< HEAD
 ```bash
 pip install -r requirements.txt  
 ```
@@ -39,8 +38,6 @@ pip install -r requirements.txt
 flask db init  
 ```
 4. If any new changes were made to the models.py file, then migrate the changes  
-```bash
-=======
 ```bash 
 pip install -r requirements.txt  
 ```
@@ -50,16 +47,11 @@ flask db init
 ```
 4. If any new changes were made to the models.py file, then migrate the changes  
 ```bash 
->>>>>>> 57386dac085e8c86e374fc34f31d86802b1125c3
 flask db migrate -m "changes made"
 flask db upgrade
 ```
 5. Start the app by running the app.py file  
-<<<<<<< HEAD
-```bash
-=======
 ```bash 
->>>>>>> 57386dac085e8c86e374fc34f31d86802b1125c3
 python app.py
 ```
 6. Visit 127.0.0.1:5000 where the app is deployed  
